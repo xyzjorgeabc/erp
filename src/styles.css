@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,900');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400');
+body {
+  background-color:  #f1f3f8;
+  user-select: none;
+}
+
+*::selection {
+  background-color: #282D3B!important;
+  color: white!important;
+}
+*[contenteditable="true"],
+input,
+textarea {
+  color: #282D3B!important;
+  font-weight: 400;
+}
+label.custom-control-label {
+  vertical-align: unset!important;
+}
+
+*[contenteditable="false"],
+input:disabled,
+textarea:disabled {
+
+  background-color: #e9ecef;
+
+}

@@ -1,0 +1,78 @@
+*{
+    user-select: none;
+}
+:host {
+    max-width: 250px;
+    position: fixed;
+    z-index: 9999;
+}
+#menu-container{
+    position: relative;
+    max-width: 250px;
+    width: 250px;
+    background-color: #282d3b;
+
+}
+.menu-section{
+    font-family: 'Poppins', sans-serif;
+}
+.menu-section h4{
+    padding: 10px 40px;
+    display: block;
+    font-size: 18px;
+    color: white;
+}
+.menu-section a {
+    padding-left: 60px;
+    color: #c0c4d1;
+    font-weight: 200;
+}
+.menu-section .fas {
+    vertical-align: middle;
+    font-size: 4px;
+}
+.menu-section a span::after {
+    content: " ";
+    transition: width .2s;
+    display: inline-block;
+    width: 10px;
+
+}
+.menu-section a:hover span::after{ 
+
+    transition: width .1s; 
+    width: 20px;
+}
+#logo-section {
+    width: 100%;
+}
+#logo {
+    display: block;
+    width: 70%;
+    margin: 0 auto;
+}
+#burguer {
+
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    right: -50px;
+}
+
+@media(min-width: 1150px){
+
+    #burguer{
+        display: none;
+    }
+
+}
+
+@media(max-width: 1150px){
+
+    :host(){
+        left: -250px;
+    }
+    :host().menu-abierto {
+        left: 0;
+    }
+}

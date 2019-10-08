@@ -1,0 +1,19 @@
+<div id="form-container" class="container-fluid py-2">
+  <form class="form-row p-2" [formGroup]="form">
+    <div class="col-6">
+      <label for="fecha-desde">Desde: </label>
+      <app-fecha-input [id]="'fecha-desde'" [btn]="true" class="form-row mb-3" formControlName="fecha_desde"></app-fecha-input>
+    </div>
+    <div class="col-6">
+      <label for="fecha-hasta">Hasta: </label>
+      <app-fecha-input [id]="'fecha-hasta'" [btn]="true" class="form-row mb-3" formControlName="fecha_hasta"></app-fecha-input>
+    </div>
+  </form>
+  <div class="row p-2">
+    <app-grid [columnas]="columnas" [tipo]="'seleccion'" class="col-12"></app-grid>
+  </div>
+  <div class="col-12 d-flex justify-content-center mt-5">
+    <button class="btn btn-success mr-5">Añadir</button>
+    <button class="btn btn-danger" (click)="cerrar();">Cancelar</button>
+  </div>
+</div>

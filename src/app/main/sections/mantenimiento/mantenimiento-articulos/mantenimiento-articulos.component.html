@@ -1,0 +1,124 @@
+<main> 
+  <app-nav-bar [titulo]="'Edición de articulos'" 
+  (siguienteRegistro)="siguienteRegistro();"
+  (anteriorRegistro)="anteriorRegistro();"
+  (anadirRegistro)="anadirRegistro();"
+  (eliminarRegistro)="eliminarRegistro();"
+  ></app-nav-bar>
+  <div id="form-container" class="container-fluid">
+    <form class="row p-5" autocomplete="sdfsdfsdf" [formGroup]="form">
+      <div class="col-md-6">
+        <div class="form-row">
+          <div class="col-8 col-sm-6 col-lg-4 col-xl-4">
+            <label for="id-articulo">ID</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <button type="button" (click)="abrirModalArticulo();" class="btn btn-primary form-control">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+              <app-fake-input id="id" tabindex="1" [type]="'unsigInt'" [int]="5" formControlName="id" class="form-control mb-3" ></app-fake-input>
+            </div>
+          </div>
+          <div class="col-lg">
+            <label for="nombre-articulo">Nombre</label>
+            <app-fake-input id="nombre-articulo" tabindex="1" [type]="'text'" [len]="50" formControlName="nombre" class="form-control mb-3" ></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+            <label for="descripcion-articulo">Descripción</label>
+            <app-fake-input id="descripcion-articulo" tabindex="1" [type]="'text'" [int]="100" formControlName="descripcion" class="form-control mb-3" ></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+            <label for="id-categoria">Categoría</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <button type="button" (click)="abrirModalCategoria();" class="btn btn-primary form-control">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+              <app-fake-input id="id-categoria" tabindex="1" [type]="'unsigInt'" [int]="5" formControlName="id_categoria" class="form-control  col-8 col-sm-3 mb-3"></app-fake-input>
+              <app-fake-input id="categoria_nombre" [type]="'text'" [len]="50" formControlName="categoria_nombre" class="form-control col mb-3" ></app-fake-input>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+            <label for="id-proveedor">Proveedor</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <button type="button" (click)="abrirModalProveedor();" class="btn btn-primary form-control">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+              <app-fake-input id="id-proveedor" tabindex="1" [type]="'unsigInt'" [int]="5" formControlName="id_proveedor" class="form-control col-8 col-sm-3 mb-3" ></app-fake-input>
+              <app-fake-input id="nombre-proveedor" [type]="'text'" [int]="50" formControlName="proveedor_nombre" class="form-control col mb-3" ></app-fake-input>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-sm-6 col-lg-4">
+            <label for="master">Unidad master</label>
+            <app-fake-input id="master" tabindex="1" [type]="'unsigFloat'" [int]="5" [dec]="3" formControlName="cantidad_master" class="form-control mb-3"></app-fake-input>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <label for="stock">Stock</label>
+            <app-fake-input id="stock" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="stock" class="form-control mb-3"></app-fake-input>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-row">
+          <div class="col-sm-6 col-lg-4">
+            <label for="iva">Tipo de IVA %</label>
+            <app-fake-input id="iva" tabindex="1" [type]="'unsigFloat'" [int]="3" [dec]="2" formControlName="iva" class="form-control mb-3" ></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-sm-6 col-lg-4">
+            <label for="precio-coste-anterior">Precio coste anterior</label>
+            <app-fake-input id="precio-coste-anterior" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="coste_anterior" class="form-control mb-3" ></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-sm-6 col-lg-4">
+            <label for="precio-coste">Precio coste</label>
+            <app-fake-input id="precio-coste" tabindex="1" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="coste" class="form-control mb-3" ></app-fake-input>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <label for="precio-coste-mas-iva">Precio coste + IVA</label>
+            <app-fake-input id="precio-coste-mas-iva" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="coste_mas_iva" class="form-control mb-3" ></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-sm-6 col-lg-4">
+            <label for="pvp-detalle">PVP detalle</label>
+            <app-fake-input id="pvp-detalle" tabindex="1" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="pvp_detalle" class="form-control mb-3" ></app-fake-input>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <label for="margen-detalle">Margen detalle</label>
+            <app-fake-input id="margen-detalle" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="margen_detalle" class="form-control mb-3" ></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-sm-6 col-lg-4">
+            <label for="pvp-mayor">PVP mayor</label>
+            <app-fake-input id="pvp-mayor" tabindex="1" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="pvp_mayor" class="form-control mb-3" ></app-fake-input>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <label for="margen-mayor">Margen mayor</label>
+            <app-fake-input id="margen-mayor" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="margen_mayor" class="form-control mb-3" ></app-fake-input>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 mt-5 d-flex justify-content-center">
+        <button type="button" (click)="guardarRegistro();" class="btn btn-success mr-5">Guardar</button>
+        <button type="button" (click)="deshacerCambios();" class="btn btn-danger" [disabled]="form.pristine">Deshacer</button>
+      </div>
+    </form>
+  </div>
+  <ng-container #modal></ng-container>
+</main>

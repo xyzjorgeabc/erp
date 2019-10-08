@@ -1,0 +1,16 @@
+<td *ngFor="let columna of columnas" class="p-1">
+  <app-fake-input [type]="columna.tipo" id="columna.nombre + nFila"  formControlName="{{columna.nombre}}" class="form-control form-control-sm rounded-0 border-0" [attr.disabled]="columna.deshabilitado ? true : null"></app-fake-input>
+</td>
+<td *ngIf="tipoGrid !== 'muestra'" class="px-0 butn-col">
+  <div id="sel-del-wrap">
+    <div *ngIf="tipoGrid === 'seleccion'" id="sel">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input"  [id]="'seleccion' + nFila">
+        <label class="custom-control-label"  [for]="'seleccion' + nFila"> </label>
+      </div>
+    </div>
+    <div *ngIf="tipoGrid === 'editable'" class="del">
+      <button type="button" *ngIf="tipoGrid === 'editable'" class="btn btn-delete" (click)="eliminar()"><i class="fas fa-times"></i></button>
+    </div>
+  </div>
+</td>

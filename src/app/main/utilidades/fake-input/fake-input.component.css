@@ -1,0 +1,7 @@
+:host {
+  overflow-wrap:unset;
+  align-items: center;
+  cursor: text;
+  user-select: text;
+  overflow: hidden;
+}

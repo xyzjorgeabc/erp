@@ -1,0 +1,69 @@
+input:disabled {
+  background-color: transparent;
+}
+input{
+  background-color: transparent!important;
+  max-height: 1.5rem;
+}
+#sel-del-wrap > * {
+  box-sizing: border-box;
+}
+.butn-col {
+  position: relative;
+}
+#sel-del-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+#sel-del-wrap > .del{
+  height: 100%;
+  width: 40px;
+}
+.del > button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.btn-delete {
+  background: none;
+  border: none;
+}
+.btn-delete i {
+  color: #282d3b;
+}
+#sel-del-wrap > #sel {
+  width: 40px;
+  height: 100%;
+  margin: auto;
+}
+#sel > div {
+  padding: 10px;
+  width: 40px;
+  height: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#sel > div label {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#sel > div label::before,
+#sel > div label::after {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(100%);
+  height: calc(100%);
+}
+.form-control {
+  background-color: transparent;
+}

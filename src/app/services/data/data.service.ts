@@ -1,0 +1,242 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DataService {
+  private static SERVER = 'http://127.0.0.1:8080';
+  private static DEFAULT_HEADERS = {
+    FETCH: {headers: new HttpHeaders({'Content-Type': 'application/json', 'Accept': 'application/json'})},
+    EDITAR: {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'text' as 'json'}, // Error en definicion de tipos.
+    ELIMINAR: {}
+  };
+  constructor( private http: HttpClient ) {
+  }
+  /*public fetchUserSettings(): UserSettings {
+
+  }*/
+  public fetchGlobalSettings(): Observable<GlobalSettings> {
+    return  this.http.post(
+      DataService.SERVER + '/fetch/global_settings', null,
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<GlobalSettings>;
+  }
+  public fetchArticulo(id: string): Observable<Articulo | Articulo[]> {
+    return this.http.post(
+      DataService.SERVER + '/fetch/articulo', JSON.stringify({articulo: {id: id}}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<Articulo | Articulo[]>;
+  }
+  public fetchProveedor(id: string): Observable<Proveedor | Proveedor[]> {
+    return this.http.post(
+      DataService.SERVER + '/fetch/proveedor', JSON.stringify({proveedor: {id: id}}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<Proveedor | Proveedor[]>;
+  }
+  public fetchCategoria(id: string): Observable<Categoria | Categoria[]> {
+    return this.http.post(
+      DataService.SERVER + '/fetch/categoria', JSON.stringify({categoria: {id: id}}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<Categoria| Categoria[]>;
+  }
+  public fetchMetodoPago(id: string): Observable<MetodoPago | MetodoPago[]> {
+    return this.http.post(
+      DataService.SERVER + '/fetch/metodo_pago', JSON.stringify({metodo_pago: {id: id}}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<MetodoPago | MetodoPago[]>;
+  }
+  public fetchCliente(id: string): Observable<Cliente | Cliente[]> {
+    return this.http.post(
+      DataService.SERVER + '/fetch/cliente', JSON.stringify({cliente: { id: id }}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<Cliente | Cliente[]>;
+  }
+  public fetchSerie(id: string): Observable<Serie | Serie[]> {
+    return this.http.post(
+      DataService.SERVER + '/fetch/serie', JSON.stringify({serie: {id: id}}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<Serie | Serie[]>;
+  }
+  public fetchListaAlabranCompra(idSerie: string): Observable<MuestraAlbaranCompra[]> {
+    return this.http.post(
+      DataService.SERVER + '/fetch/listar/albaran_compra', JSON.stringify({albaran_compra: {id_serie: idSerie}}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<MuestraAlbaranCompra[]>;
+  }
+  public fetchAlbaranCompra(idSerie: string, id: string): Observable<AlbaranCompra | AlbaranCompra[]> {
+    return this.http.post(
+      DataService.SERVER + '/fetch/albaran_compra', JSON.stringify({albaran_compra: {id_serie: idSerie, id: id}}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<AlbaranCompra | AlbaranCompra[]>;
+  }
+  public fetchFacturaCompra(idSerie: string, id: string): Observable<FacturaCompra | FacturaCompra[]> {
+    return this.http.post(
+      DataService.SERVER + '/fetch/factura_compra', JSON.stringify({factura_compra: {id_serie: idSerie, id: id}}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<FacturaCompra | FacturaCompra[]>;
+  }
+  public editarArticulo(articulo: Articulo): Observable<Articulo> {
+    return this.http.post(
+      DataService.SERVER + '/editar/articulo', JSON.stringify({articulo: articulo}),
+      DataService.DEFAULT_HEADERS.EDITAR) as Observable<Articulo>;
+  }
+  public editarProveedor(proveedor: Proveedor): Observable<Proveedor> {
+    return this.http.post(
+      DataService.SERVER + '/editar/proveedor', JSON.stringify({proveedor: proveedor}),
+      DataService.DEFAULT_HEADERS.EDITAR) as Observable<Proveedor>;
+  }
+  public editarCategoria(categoria: Categoria): Observable<Categoria> {
+    return this.http.post(
+      DataService.SERVER + '/editar/categoria', JSON.stringify({categoria: categoria}),
+      DataService.DEFAULT_HEADERS.EDITAR) as Observable<Categoria>;
+  }
+  public editarCliente(cliente: Cliente): Observable<Cliente> {
+    return this.http.post(
+      DataService.SERVER + '/editar/cliente', JSON.stringify({cliente: cliente}),
+      DataService.DEFAULT_HEADERS.EDITAR) as Observable<Cliente>;
+  }
+  public editarAlbaranCompra(albaranCompra: AlbaranCompra): Observable<AlbaranCompra> {
+    return this.http.post(
+      DataService.SERVER + '/editar/albaran_compra', JSON.stringify({albaran_compra: albaranCompra}),
+      DataService.DEFAULT_HEADERS.EDITAR) as Observable<AlbaranCompra>;
+  }
+  public editarFacturaCompra(facturaCompra: FacturaCompra): Observable<FacturaCompra> {
+    return this.http.post(
+      DataService.SERVER + '/editar/factura_compra', JSON.stringify({factura_compra: facturaCompra}),
+      DataService.DEFAULT_HEADERS.EDITAR) as Observable<FacturaCompra>;
+  }
+}
+
+export interface GlobalSettings {
+  id_serie_actual: number;
+  logo: string;
+}
+export interface UserSettings {
+  nombre_usuario: string;
+  tipo_usuario: string;
+  mantener_sesion: boolean;
+}
+export interface Serie {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  fecha_desde: string;
+  fecha_hasta: string;
+}
+export interface Articulo {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  id_categoria: number;
+  id_proveedor: number;
+  cantidad_master: number;
+  iva: number;
+  coste_anterior: number;
+  coste: number;
+  pvp_detalle: number;
+  pvp_mayor: number;
+}
+export interface Categoria {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  iva_por_defecto: number;
+}
+export interface Cliente {
+  id: number;
+  nombre_comercial: string;
+  cif: string;
+  persona_contacto: string;
+  direccion: string;
+  telefono: string;
+  fax: string;
+  precio_albaran: boolean;
+  factura_automatica: boolean;
+  id_metodo_pago: number;
+  cuenta_bancaria: string;
+  sitio_web: string;
+  email: string;
+  fecha_nacimiento: string;
+  fecha_captacion: string;
+  descuento: number;
+  informacion_adicional: string;
+}
+export interface Proveedor {
+  id: number;
+  nombre: string;
+  cif: string;
+  persona_contacto: string;
+  direccion: string;
+  telefono: string;
+  fax: string;
+  id_metodo_pago: number;
+  cuenta_bancaria: string;
+  sitio_web: string;
+  email: string;
+  informacion_adicional: string;
+}
+export interface MetodoPago {
+  id: number;
+  nombre: string;
+  descripcion: string;
+}
+export interface AlbaranCompra {
+  id_serie: number;
+  id: number;
+  id_proveedor: number;
+  fecha: string;
+  id_albaran_proveedor: string;
+  id_metodo_pago: number;
+  descuento_general: number;
+  id_serie_factura: number;
+  id_factura: number;
+  registros: RegistroAlbaranCompra[];
+}
+export interface RegistroAlbaranCompra {
+  n: number;
+  id_articulo: number;
+  nombre_registro: string;
+  iva: number;
+  cantidad_master: number;
+  precio_coste: number;
+  descuento: number;
+  cantidad: number;
+}
+export interface MuestraAlbaranCompra {
+  id: number;
+  fecha: string;
+  id_albaran_proveedor: string;
+  nombre_proveedor: string;
+  nombre_metodo: string;
+  descuento_general: number;
+  import: number;
+}
+export interface FacturaCompra {
+  id_serie: number;
+  id: number;
+  id_proveedor: number;
+  fecha: string;
+  id_factura_proveedor: string;
+  id_metodo_pago: number;
+  descuento_general: number;
+}
+
+export interface PedidoVenta {
+  id_serie: number;
+  id: number;
+  id_cliente: number;
+  fecha_pedido: string;
+  fecha_entrega: string;
+  id_serie_albaran: number;
+  id_albaran: number;
+}
+export interface AlbaranVenta {
+  id_serie: number;
+  id: number;
+  id_cliente: number;
+  id_metodo_pago: number;
+  fecha: string;
+  descuento_general: number;
+  id_serie_factura: number;
+  id_factura: number;
+}
+export interface FacturaVenta {
+  id_serie: number;
+  id: number;
+  id_cliente: number;
+  fecha: string;
+  id_metodo_pago: number;
+  descuento_general: number;
+}

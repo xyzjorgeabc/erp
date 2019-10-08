@@ -1,0 +1,94 @@
+<main>
+  <app-nav-bar [titulo]="titulo"></app-nav-bar>
+  <div id="form-container" class="container-fluid full-size">
+    <form class="row p-5" autocomplete="off" [formGroup]="form">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-row"> 
+              <div class="col-4">
+                <label for="series">Serie</label>
+                <select id="series" class="form-control mb-3">
+                  <option *ngFor="let serie of series">{{serie}}</option>
+                </select>
+              </div>
+              <div class="col-8">
+                <label for="id">ID pedido</label>
+                <app-fake-input id="id" [type]="'unsigInt'" [int]="5" formControlName="id" class="form-control mb-3"></app-fake-input>
+              </div>
+            </div>
+            <div class="form-row"> 
+              <div class="col-12">
+                <label for="id-cliente">Cliente</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button type="button" class="btn btn-primary form-control">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                  <app-fake-input id="id-cliente" [type]="'unsigInt'" [int]="5" formControlName="id_cliente" class="form-control col-2 mb-3"></app-fake-input>
+                  <app-fake-input id="nombre-cliente" [type]="'unsigInt'" [len]="50" formControlName="nombre_cliente" class="form-control mb-3"></app-fake-input>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-row">
+              <div class="col-6">
+                <label for="fecha-pedido">Fecha pedido</label>
+                <app-fecha-input [id]="'fecha-pedido'" formControName="fecha_pedido" [btn]="true" class="form-row mb-3"></app-fecha-input>
+              </div>
+              <div class="col-6">
+                <label for="fecha-entrega">Fecha entrega</label>
+                <app-fecha-input [id]="'fecha-entrega'" formControName="fecha_entrega" [btn]="true" class="form-row mb-3"></app-fecha-input>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <table class="table table-striped table-bordered table-sm">
+          <thead class="thead-light"> 
+            <tr>
+              <th scope="col" *ngFor="let columna of columnas" class="font-weight-normal text-nowrap rs-x">
+                {{columna.nombre}}
+              </th>
+              <th scope="col" class="butn-col"></th>
+            </tr>
+          </thead>
+          <tbody formArrayName="registros">
+            <ng-container *ngFor="let registro of registros.controls; let i = index;">
+            <tr [formGroupName]="i">
+              <td class="p-1" >
+                <app-fake-input [type]="" id="id" formControlName="id" class="form-control form-control-sm rounded-0 border-0" [attr.disabled]=""></app-fake-input>
+              </td>
+              <td class="p-1">
+                <app-fake-input [type]="" id="nombre" formControlName="nombre" class="form-control form-control-sm rounded-0 border-0" [attr.disabled]=""></app-fake-input>
+              </td>
+              <td class="p-1">
+                <app-fake-input [type]="" id="master" formControlName="master" class="form-control form-control-sm rounded-0 border-0" [attr.disabled]=""></app-fake-input>
+              </td>
+              <td class="p-1">
+                <app-fake-input [type]="" id="unidades" formControlName="unidades" class="form-control form-control-sm rounded-0 border-0" [attr.disabled]=""></app-fake-input>
+              </td>
+              <td class="p-1">
+                <app-fake-input [type]="" id="kg" formControlName="kg" class="form-control form-control-sm rounded-0 border-0" [attr.disabled]=""></app-fake-input>
+              </td>
+              <td class="px-0 butn-col">
+                <div class="del">
+                  <button type="button" class="btn btn-delete" (click)="eliminarFila(i)"><i class="fas fa-times"></i></button>
+                </div>
+              </td>
+            </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <button (click)="anadirFila()" class="btn btn-primary">Añadir</button>
+      </div>
+      <div class="col-12 d-flex justify-content-center mt-5">
+        <button type="submit" (click)="guardar();" class="btn btn-success mr-5">Guardar</button>
+        <button type="reset" class="btn btn-danger">Reset</button>
+      </div>
+    </form>
+  </div>
+</main>

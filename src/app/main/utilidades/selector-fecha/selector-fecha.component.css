@@ -1,0 +1,86 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+#fecha-wrap {
+  padding: 10px;
+  width: 300px;
+  background-color: #ffffff;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 3px;
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12)
+}
+#fecha-wrap > div {
+  width: 100%;
+  height: 100%;
+}
+table {
+  background-color: #ffffff;
+  width:100%;
+  height: 100%;
+  font-family: 'Poppins';
+}
+th {
+  width: 30px;
+  height: 20px;
+}
+tr {
+  display: flex;
+  justify-content: space-evenly;
+}
+th > span {
+  display: block;
+  text-align: center;
+  font-weight: 500;
+  color: rgba(0,0,0,.6);
+}
+tr > td {
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  position: relative;
+}
+td.seleccionable :hover {
+  cursor: pointer;
+  background-color:rgba(0,0,0,.1);
+}
+td > span {
+  display: block;
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  left: 5%;
+  top: 5%;
+  font-weight: 500;
+  text-align: center;
+  color: rgba(0,0,0,.3);
+} 
+td.seleccionado {
+  background-color:rgba(0,0,0,.9);
+}
+td.seleccionado > span {
+  color:#ffffff;
+}
+hr {
+  margin: 10px 0;
+}
+.nav {
+  padding: 10px 0 20px 0;
+  display: flex;
+  justify-content: space-between;
+}
+.nav button {
+  background-color: transparent;
+  border: none;
+}
+.switch > button {
+  font-family: 'Poppins';
+  font-weight: 500;
+  color: rgba(0,0,0,.6);
+}
+.controles > button {
+  font-family: 'Poppins';
+  color: rgba(0,0,0,.4);
+  width: 40px;
+}

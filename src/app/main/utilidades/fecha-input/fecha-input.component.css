@@ -1,0 +1,47 @@
+span {
+  width: 0;
+  position: relative;
+  display: block;
+}
+span::after {
+  content: "/";
+  position: absolute;
+  height: 100%;
+  visibility: visible;
+  z-index: 1;
+  right: -2px;
+  padding: .375rem 0;
+}
+
+.form-control:focus-within {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+form input {
+  border: 0;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+form input:focus {
+  outline: none;
+  border: 0;
+  box-shadow: none;
+} 
+
+#fecha button.action-btn.btn {
+  display: block;
+  padding: 0;
+  border: none;
+}
+
+app-selector-fecha {
+  position: absolute;
+  z-index: 99999;
+  top: Calc(100% - 1rem);
+  margin-left: 5px;
+}

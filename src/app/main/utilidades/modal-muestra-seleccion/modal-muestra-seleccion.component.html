@@ -1,0 +1,56 @@
+<div class="container modal-wrap bg-white">
+  <div class="row mb-3">
+    <div class="col tables-wrap">
+      <div id="fake-t-wrap">
+        <div>
+          <table id="fake-table" class="table">
+            <thead>
+              <tr role="row">
+                <th id="fake_{{col}}" rowspan="1" colspan="1" [attr.data-nombre]="col" (click)="ordenar($event);" *ngFor="let col of columnas; let i = index;">
+                  {{col}}
+                  <i class="fas fa-sort sort-icon"></i>
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      <div id="real-t-wrap" (scroll)="scrollSync($event)">
+        <table id="real-table" class="table">
+          <thead>
+            <tr>
+              <th id="real_{{col}}" *ngFor="let col of columnas">
+                {{col}}
+              </th>
+            </tr>
+          </thead>
+          <tbody (click)="seleccionRegistro($event)" (dblclick)="envioSeleccion();">
+            <tr class="border-bottom registro" [class.bg-light]="i % 2" [attr.data-i]="i" *ngFor="let registro of data; let i = index;">
+              <td *ngFor="let col of columnas">
+                {{registro[col]}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <form class="form-row mb-3" [formGroup]="form">
+    <div class="form-group col-6">
+      <label for="busqueda">Buscar:</label>
+      <input id="busqueda" formControlName="busqueda" type="text" class="form-control">
+    </div>
+    <div class="form-group col-3">
+      <label for="col-busqueda">Buscar por:</label>
+      <select id="col-busqueda" formControlName="col_busqueda" class="form-control">
+        <option *ngFor="let col of columnas"> {{col}} </option>
+      </select>
+    </div>
+  </form>
+  <div class="form-row">
+    <div class="col d-flex justify-content-center">
+      <button type="button" class="btn btn-success mr-3" (click)="envioSeleccion();"> Seleccionar </button>
+      <button type="button" class="btn btn-danger" (click)="cerrar();"> Cerrar </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+:host {
+   
+  display: block;
+}
+#main {
+  padding: 50px;
+  margin-left: 250px;
+}
+
+@media(max-width: 1150px){
+
+  #main {
+      margin-left: 0px;
+  }
+
+}

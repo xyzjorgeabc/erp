@@ -1,0 +1,11 @@
+* Refactor grid, boton debe ser añadido desde fuera, el mismo componente puede exportar boton y grid???
+
+/ loginService deberia ser sesionService.
+!!! REFACTOR MANT-ART LISTENERS
+Las respuestas de mant-art deben fijar 3 decimales solo en el resultado.
+
+!!! Agregar select All / delete All Al grid.
+!!! Agregar modulo cuadrante horarios// Calendario.
+!!! Servicio de MAILS.
+
+!!!!!!!!set totals no relentiza.

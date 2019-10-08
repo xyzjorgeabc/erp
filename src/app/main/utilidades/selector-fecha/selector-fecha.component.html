@@ -1,0 +1,77 @@
+<div id="fecha-wrap" (wheel)="scrollMes($event);">
+  <div>
+    <div class="nav">
+      <div class="switch">
+        <button type="button" class="btn btn-light"> {{meses[mostrandoMes]}} {{mostrandoAno}} <i class="fas fa-sort-down"></i></button>
+      </div>
+      <div class="controles">
+        <button type="button" class="btn btn-light" (click)="previoMes();"> <i class="fas fa-chevron-left"></i> </button>
+        <button type="button" class="btn btn-light" (click)="siguienteMes();"> <i class="fas fa-chevron-right"></i> </button>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th *ngFor="let dia of diasCorto"> <span > {{dia}} </span> </th>
+        </tr>
+      </thead>
+      <hr/>
+      <tbody (click)='selDia($event);'>
+        <tr>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+        </tr>
+        <tr>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+        </tr>
+        <tr>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+        </tr>
+        <tr>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+        </tr>
+        <tr>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+        </tr>
+        <tr>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+          <td #dia> <span></span> </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

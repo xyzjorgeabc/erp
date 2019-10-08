@@ -1,0 +1,48 @@
+<main>
+<app-nav-bar [titulo]="'Edición de categorías'"
+(siguienteRegistro)="siguienteRegistro();"
+(anteriorRegistro)="anteriorRegistro();"
+(anadirRegistro)="anadirRegistro();"
+(eliminarRegistro)="eliminarRegistro();"
+></app-nav-bar>
+  <div id="form-container" class="container">
+    <form  class="row p-5" autocomplete="off" [formGroup]="form">
+      <div class="col-md-12">
+        <div class="form-row">
+          <div class="col-8 col-sm-6 col-md-2 col-xl-2">
+            <label for="id-categoria">ID</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <button type="button" (click)="buscarCategorias();" class="btn btn-primary form-control">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+              <app-fake-input id="id" [type]="'unsigInt'" [int]="5" formControlName="id" class="form-control mb-3"></app-fake-input>
+            </div>
+          </div>
+          <div class="col-sm">
+            <label for="nombre">Nombre</label>
+            <app-fake-input id="nombre" [type]="'text'" [len]="50" formControlName="nombre" class="form-control mb-3"></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-12">
+            <label for="descripcion">Descripción</label>
+            <app-fake-input id="descripcion" [type]="'text'" [len]="100" formControlName="descripcion" class="form-control mb-3"></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-6 col-sm-2">
+            <label for="iva_por_defecto">IVA por defecto</label>
+            <app-fake-input id="iva_por_defecto" [type]="'unsigFloat'" [int]="3" [dec]="2" formControlName="iva_por_defecto" class="form-control mb-3"></app-fake-input>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 mt-5 d-flex justify-content-center">
+        <button type="button" (click)="guardarRegistro();" class="btn btn-success mr-5">Guardar</button>
+        <button type="button" (click)="deshacerCambios();" [disabled]="form.pristine" class="btn btn-danger">Deshacer</button>
+      </div>
+    </form>
+  </div>
+  <ng-container #modal></ng-container>
+</main>

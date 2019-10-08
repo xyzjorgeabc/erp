@@ -1,0 +1,23 @@
+header button.action-btn {
+    margin-right: 20px;
+    padding: 0;
+    border: none;
+    position: relative;
+    width: 45px;
+    height: 45px;
+}
+header button.action-btn:active > i{
+    font-size: 35px;
+    transition: font-size .1s;
+}
+.action-btn i{
+    font-size: 30px;
+    color: #282d3b;
+}
+
+@media (max-width: 992px){
+    #title-col { 
+
+        margin-bottom:  1.5rem;
+     }
+}

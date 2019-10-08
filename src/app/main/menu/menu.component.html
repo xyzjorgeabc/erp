@@ -1,0 +1,26 @@
+<div id="menu-container" class="h-100 d-flex flex-column">
+  <div id="logo-section">
+    <img id="logo"class="pt-5 pb-5" src="./assets/No-logo.svg">
+  </div>
+  <nav class="d-flex flex-column">
+    <div class="menu-section">
+      <h4 class="mt-4">MANTENIMIENTO</h4>
+      <a routerLink="./mantenimiento/articulos" class="nav-link" ><i class="fas fa-circle"></i><span> </span>Articulos </a>
+      <a routerLink="./mantenimiento/categorias" class="nav-link" ><i class="fas fa-circle"></i><span> </span>Categorías</a>
+      <a routerLink="./mantenimiento/clientes" class="nav-link" ><i class="fas fa-circle"></i><span> </span>Clientes</a>
+      <a routerLink="./mantenimiento/proveedores" class="nav-link" ><i class="fas fa-circle"></i><span> </span>Proveedores</a>
+    </div>
+    <div class="menu-section">
+      <h4 class="mt-4">COMPRA</h4>
+      <a routerLink="./compras/albaranes" class="nav-link" ><i class="fas fa-circle"></i><span> </span>Albaranes </a>
+      <a routerLink="./compras/facturas" class="nav-link" ><i class="fas fa-circle"></i><span> </span>Facturas</a>
+    </div>
+    <div class="menu-section">
+      <h4 class="mt-4">VENTA</h4>
+      <a routerLink="./ventas/pedidos" class="nav-link" ><i class="fas fa-circle"></i><span> </span>Pedidos</a>
+      <a routerLink="./ventas/albaranes" class="nav-link" ><i class="fas fa-circle"></i><span> </span>Albaranes</a>
+      <a routerLink="./ventas/facturas" class="nav-link" ><i class="fas fa-circle"></i><span> </span>Facturas</a>
+    </div>
+  </nav>
+  <button id="burguer" (click)="toggleMenu()" class="btn"><i class="fas fa-bars"></i></button>
+</div>

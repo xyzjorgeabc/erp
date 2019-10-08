@@ -1,0 +1,138 @@
+<main d-flex flex-column h-100 w-100>
+    <app-nav-bar [titulo]="'Edición de clientes'"
+    (siguienteRegistro)="siguienteRegistro();"
+    (anteriorRegistro)="anteriorRegistro();"
+    (anadirRegistro)="anadirRegistro();"
+    (eliminarRegistro)="eliminarRegistro();"
+    ></app-nav-bar>
+    <div id="form-container" class="container-fluid">
+      <form class="row p-5" autocomplete="off" [formGroup]="form">
+        <div class="col-md-6">
+          <div class="form-row">
+              <div class="col-8 col-sm-6 col-lg-4 col-xl-4">
+                <label for="id-cliente">ID</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button type="button" (click)="abrirModalCliente()" class="btn btn-primary form-control">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                  <app-fake-input id="id" [type]="'unsigInt'" [int]="5" formControlName="id" class="form-control mb-3"></app-fake-input>
+                </div>
+              </div>
+              <div class="col-lg">
+                <label for="nombre-comercial">Nombre comercial</label>
+                <app-fake-input id="nombre-comercial" [type]="'text'" [len]="50" formControlName="nombre_comercial" class="form-control mb-3"></app-fake-input>
+              </div>
+          </div>
+          <div class="form-row">
+              <div class="col-12">
+                <label for="CIF">CIF</label>
+                <app-fake-input id="cif" [type]="'text'" [len]="10" formControlName="cif" class="form-control mb-3"></app-fake-input>
+              </div>
+          </div>
+          <div class="form-row">
+            <div class="col-12">
+              <label for="persona-contacto">Persona de contacto</label>
+              <app-fake-input id="persona-contacto" [type]="'text'" [len]="50" formControlName="persona_contacto" class="form-control mb-3"></app-fake-input>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-12">
+              <label for="direccion">Dirección</label>
+              <app-fake-input id="direccion" [type]="'text'" [len]="50" formControlName="direccion" class="form-control mb-3"></app-fake-input>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-sm-6 col-lg-8 col-xl-6">
+              <label for="telefono">Teléfono</label>
+              <app-fake-input id="telefono" [type]="'text'" [len]="15" formControlName="telefono" class="form-control mb-3"></app-fake-input>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-sm-6 col-lg-8 col-xl-6">
+              <label for="fax">Fax</label>
+              <app-fake-input id="fax" [type]="'text'" [len]="15" formControlName="fax" class="form-control mb-3"></app-fake-input>
+            </div>
+          </div>
+          <div class="form-row">
+              <div class="col-8">
+                <div class="form-row">
+                  <div class="col-12 custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="precio-albaran" formControlName="precio_albaran">
+                    <label for="precio-albaran" class="custom-control-label mb-3">Incluir precios en albarán</label>
+                  </div>
+                  <div class="col-12 custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="factura-automatica" formControlName="factura_automatica">
+                    <label for="factura-automatica" class="custom-control-label mb-3">Generar factura automática</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-row">
+                  <div class="col-12">
+                    <label for="descuento">Descuento</label>
+                    <app-fake-input id="descuento" [type]="'unsigFloat'" [int]="3" [dec]="2" formControlName="descuento" class="form-control mb-3"></app-fake-input>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-row">
+            <div class="col-12">
+              <label for="id-metodo-pago">Metodo de pago</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <button type="button" (click)="abrirModalMetodoPago();" class="btn btn-primary form-control">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+                <app-fake-input id="id-metodo-pago" [type]="'unsigInt'" [int]="5" formControlName="id_metodo_pago" class="form-control col-8 col-sm-3 mb-3"></app-fake-input>
+                <app-fake-input id="nombre-metodo-pago" [type]="'text'" [len]="50" formControlName="nombre_metodo_pago" class="form-control col mb-3"></app-fake-input>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-12">
+              <label for="cuenta-bancaria">Cuenta bancaria</label>
+              <app-fake-input id="cuenta-bancaria" [type]="'text'" [int]="30" formControlName="cuenta_bancaria" class="form-control mb-3"></app-fake-input>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-12">
+              <label for="sitio-web">Sitio web</label>
+              <app-fake-input id="sitio-web" [type]="'text'" [len]="30" formControlName="sitio_web" class="form-control mb-3"></app-fake-input>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-12">
+              <label for="e-mail">E-mail</label>
+              <app-fake-input id="email" [type]="'text'" [len]="30" formControlName="email" class="form-control mb-3"></app-fake-input>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-sm-8 col-lg-6">
+              <label for="fecha-nacimiento">Fecha nacimiento</label>
+              <app-fecha-input id="fecha_nacimiento" formControlName="fecha_nacimiento" [btn]="true" class="form-row mb-3"></app-fecha-input>
+            </div>
+            <div class="col-sm-8 col-lg-6">
+              <label for="fecha-captacion">Fecha captación</label>
+              <app-fecha-input id="fecha_captacion" formControlName="fecha_captacion" [btn]="true" class="form-row mb-3"></app-fecha-input>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-12">
+              <label for="informacion-adicional">Información adicional</label>
+              <textarea id="informacion-adicional" formControlName="informacion_adicional" class="form-control mb-3"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 mt-5 d-flex justify-content-center">
+          <button type="button" (click)="guardarRegistro();" class="btn btn-success mr-5">Guardar</button>
+          <button type="button" (click)="deshacerCambios();"class="btn btn-danger" [disabled]="form.pristine">Deshacer</button>
+        </div>
+      </form>
+    </div>
+    <ng-container #modal></ng-container>
+  </main>

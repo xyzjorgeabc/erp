@@ -1,0 +1,106 @@
+<main d-flex flex-column h-100 w-100>
+  <app-nav-bar [titulo]="'Edición de proveedores'"
+  (siguienteRegistro)="siguienteRegistro();"
+  (anteriorRegistro)="anteriorRegistro();"
+  (anadirRegistro)="anadirRegistro();"
+  (eliminarRegistro)="eliminarRegistro();"
+  ></app-nav-bar>
+  <div id="form-container" class="container-fluid">
+    <form  class="row p-5" autocomplete="off"  [formGroup]="form">
+      <div class="col-md-6">
+        <div class="form-row">
+            <div class="col-8 col-sm-6 col-lg-4 col-xl-4">
+              <label for="id-proveedor">ID</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <button type="button" (click)="abrirModalProveedor();" class="btn btn-primary form-control">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+                <app-fake-input id="id" [type]="'unsigInt'" [int]="5" formControlName="id" class="form-control mb-3"></app-fake-input>
+              </div>
+            </div>
+            <div class="col-lg">
+              <label for="nombre">Nombre</label>
+              <app-fake-input id="nombre" [type]="'text'" [len]="50" formControlName="nombre" class="form-control mb-3"></app-fake-input>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-12">
+              <label for="CIF">CIF</label>
+              <app-fake-input id="cif" [type]="'text'" [len]="10" formControlName="cif" class="form-control mb-3"></app-fake-input>
+            </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+            <label for="persona-contacto">Persona de contacto</label>
+            <app-fake-input id="persona-contacto" [type]="'texto'" [len]="50" formControlName="persona_contacto" class="form-control mb-3"></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+            <label for="direccion">Dirección</label>
+            <app-fake-input id="direccion" [type]="'text'" [len]="50" formControlName="direccion" class="form-control mb-3"></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-sm-6 col-lg-8 col-xl-6">
+            <label for="telefono">Teléfono</label>
+            <app-fake-input id="telefono" [type]="'text'" [len]="15" formControlName="telefono" class="form-control mb-3"></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+            <div class="col-sm-6 col-lg-8 col-xl-6">
+              <label for="fax">Fax</label>
+              <app-fake-input id="fax" [type]="'text'" [int]="15" formControlName="fax" class="form-control mb-3"></app-fake-input>
+            </div>
+          </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-row">
+          <div class="col-12">
+            <label for="id-metodo-pago">Metodo de pago</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <button type="button" (click)="abrirModalMetodoPago();" class="btn btn-primary form-control mb-3">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+              <app-fake-input id="id-metodo-pago" [type]="'unsigInt'" [int]="5" formControlName="id_metodo_pago" class="form-control col-8 col-sm-3 mb-3"></app-fake-input>
+              <app-fake-input id="nombre-metodo-pago" [type]="'text'" [int]="50" formControlName="nombre_metodo_pago" class="form-control mb-3"></app-fake-input>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+            <label for="cuenta_bancaria">Cuenta bancaria</label>
+            <app-fake-input id="cuenta_bancaria" [type]="'text'" [int]="30" formControlName="cuenta_bancaria" class="form-control mb-3"></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+            <label for="sitio_web">Sitio web</label>
+            <app-fake-input id="sitio_web" [type]="'text'" [int]="30" formControlName="sitio_web" class="form-control mb-3"></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+            <label for="e-mail">E-mail</label>
+            <app-fake-input id="email" [type]="'text'" [int]="30" formControlName="email" class="form-control mb-3"></app-fake-input>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12">
+            <label for="informacion_adicional">Información adicional</label>
+            <textarea id="informacion_adicional" class="form-control mb-3" formControlName="informacion_adicional" placeholder="* Solo entrega los lunes"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mt-5 d-flex justify-content-center">
+        <button type="button" (click)="guardarRegistro();" class="btn btn-success mr-5">Guardar</button>
+        <button type="button" (click)="deshacerCambios();" class="btn btn-danger" [disabled]="form.pristine">Deshacer</button>
+      </div>
+    </form>
+  </div>
+  <ng-container #modal></ng-container>
+</main>

@@ -1,0 +1,14 @@
+<form class="col-sm-10" id="fecha" [formGroup]="form">
+  <div class="d-flex form-control p-0">
+    <input type="text" formControlName="dia" class="rounded-left" (drop)="$event.preventDefault();" (keypress)="onKDia($event);" (keydown)="onKDia($event);">
+    <span></span>
+    <input type="text" #mes formControlName="mes" (drop)="$event.preventDefault();" (keypress)="onKMes($event);" (keydown)="onKMes($event);">
+    <span></span>
+    <input type="text" #ano formControlName="ano" class="rounded-right" (drop)="$event.preventDefault();" (keypress)="onKAno($event);" (keydown)="onKAno($event);">
+  </div>
+</form>
+<button *ngIf="btn" #btn class="col-sm-2 btn" tabindex="-1" (click)="mostrarSelector();"> 
+  <i class="fas fa-calendar-alt"></i>
+</button>
+<app-selector-fecha *ngIf="selectorOn" (fechaSel)="onFechaSelect($event);"> 
+</app-selector-fecha>

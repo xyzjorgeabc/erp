@@ -1,0 +1,32 @@
+
+<div id="wrapper">
+  <section id="login-sect" class="card-login shadow p-3 rounded">
+    <div id="login-header" class="mb-5">
+      <h1 class="text-center">Inicia sesión!</h1>
+      <h5 class="text-center">Inicia sesión para poder administrar tu cuenta.</h5>
+    </div>
+    <div class="form-wrap">
+      <form  class="mb-3" (ngSubmit)="loginRequest($event)" [formGroup]="loginForm">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class=" input-group-text"> <i class="fas fa-user"></i></span>
+          </div>
+          <input type="text" class="form-control" formControlName="usuario" placeholder="ejemplo@mail.com">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"> <i class="fas fa-key"></i></span>
+          </div>
+          <input type="password" class="form-control" formControlName="contrasena" placeholder="constraseña">
+        </div>
+        <div class="custom-control mb-3 custom-checkbox">
+          <input type="checkbox" class="custom-control-input" formControlName="recordarEmail" id="customCheck1">
+          <label class="custom-control-label" for="customCheck1">
+            Recordar nombre de usuario
+          </label>
+        </div>
+        <button class="btn btn-dark w-100 py-2">Entrar</button>
+      </form>
+    </div>
+  </section>
+</div>
