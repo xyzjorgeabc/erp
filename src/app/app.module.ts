@@ -32,7 +32,6 @@ import { SelectorFechaComponent } from './main/utilidades/selector-fecha/selecto
 import { FechaInputComponent } from './main/utilidades/fecha-input/fecha-input.component';
 import { FakeInputComponent } from './main/utilidades/fake-input/fake-input.component';
 import { ModalMuestraSeleccionComponent } from './main/utilidades/modal-muestra-seleccion/modal-muestra-seleccion.component';
-import { NumberFormatPipe } from './pipes/number-format.pipe';
 
 @NgModule({
   declarations: [
@@ -60,7 +59,6 @@ import { NumberFormatPipe } from './pipes/number-format.pipe';
     FechaInputComponent,
     FakeInputComponent,
     ModalMuestraSeleccionComponent,
-    NumberFormatPipe,
   ],
   imports: [
     BrowserModule,

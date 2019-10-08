@@ -1,5 +1,9 @@
 <main>
-  <app-nav-bar [titulo]="'Edición de Facturas de compra'"></app-nav-bar>
+  <app-nav-bar [titulo]="'Edición de Facturas de compra'"
+  (siguienteRegistro)="siguienteRegistro();"
+  (anteriorRegistro)="anteriorRegistro();"
+  (anadirRegistro)="anadirRegistro();"
+  (eliminarRegistro)="eliminarRegistro();"></app-nav-bar>
   <div id="form-container" class="container-fluid full-size">
     <form class="row p-5" autocomplete="off" [formGroup]="form">
       <div class="col-12">
@@ -7,14 +11,21 @@
           <div class="col-6">
             <div class="form-row">
               <div class="col-4">
-                <label for="series">Serie</label>
-                <select id="series" class="form-control mb-3">
-                  <option *ngFor="let serie of series">{{serie}}</option>
+                <label for="series-factura">Serie</label>
+                <select id="series-factura" formControlName="serie" class="form-control mb-3">
+                  <option *ngFor="let nombre_serie of _series.getValues();">{{nombre_serie}}</option>
                 </select>
               </div>
-              <div class="col-8">
+              <div class="col-4">
                 <label for="id">ID Factura</label>
-                <input type="text" id="id" formControlName="id" class="form-control mb-3">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button type="button" (click)="abrirModalFactura();" class="btn btn-primary form-control">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                  <input type="text" id="id" formControlName="id" class="form-control mb-3">
+                </div>
               </div>
             </div>
             <div class="form-row">
@@ -68,9 +79,12 @@
         <table class="table table-striped table-bordered table-sm">
           <thead class="thead-light"> 
             <tr>
-              <th scope="col" class="font-weight-normal text-nowrap rs-x">
-                
-              </th>
+              <th scope="col" class="font-weight-normal text-nowrap rs-x">ID</th>
+              <th scope="col" class="font-weight-normal text-nowrap rs-x">ID serie</th>
+              <th scope="col" class="font-weight-normal text-nowrap rs-x">ID proveedor</th>
+              <th scope="col" class="font-weight-normal text-nowrap rs-x">fecha</th>
+              <th scope="col" class="font-weight-normal text-nowrap rs-x">ID factura proveedor</th>
+              <th scope="col" class="font-weight-normal text-nowrap rs-x">descuento</th>
               <th scope="col" class="butn-col"></th>
             </tr>
           </thead>
@@ -115,5 +129,5 @@
       </div>
     </form>
   </div>
-  <ng-container #modal></ng-container>
+  <ng-container #modalAlbaranes></ng-container>
 </main>

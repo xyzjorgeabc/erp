@@ -2,26 +2,31 @@ import { Component, OnInit, ComponentFactoryResolver, ViewChild, ComponentRef, V
 import { NavegacionService } from '../../../../services/navegacion/navegacion.service';
 import { ModalSeleccionAlbaranesComponent } from '../../../utilidades/modal-seleccion-albaranes/modal-seleccion-albaranes.component';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
-import { DataService, Serie } from 'src/app/services/data/data.service';
+import { DataService, Serie, MetodoPago, FacturaCompra, Proveedor } from 'src/app/services/data/data.service';
+import { BiMap } from 'src/app/main/utilidades/utils/ultis';
+import { CompEditable, ComponenteEditor } from '../../mantenimiento/mantenimiento-comp';
 
 @Component({
   selector: 'app-compras-facturas',
   templateUrl: './compras-facturas.component.html',
   styleUrls: ['./compras-facturas.component.css', '../../seccion.css']
 })
-export class ComprasFacturasComponent implements OnInit {
-  public _series: Serie[];
-  @ViewChild('modal', { read: ViewContainerRef, static: true })
-  private modalContainer: ViewContainerRef;
-  private modal: ComponentRef<ModalSeleccionAlbaranesComponent>;
+export class ComprasFacturasComponent extends ComponenteEditor<FacturaCompra | Proveedor | MetodoPago> implements OnInit, CompEditable {
+  @ViewChild('modalAlbaranes', { read: ViewContainerRef, static: true })
+  private modalAlbaranesContainer: ViewContainerRef;
+  private modalAlbaranes: ComponentRef<ModalSeleccionAlbaranesComponent>;
+  protected uneditedFormState: FacturaCompra;
+  public _series: BiMap<number, string>;
   public form: FormGroup;
   public albaranes: FormArray;
   constructor(private ns: NavegacionService,
               private ds: DataService,
-              private CFR: ComponentFactoryResolver) {
-    // peticion de series
+              protected CFR: ComponentFactoryResolver) {
+    super();
+    this._series = new BiMap();
     this.albaranes = new FormArray([]);
     this.form = new FormGroup({
+      serie: new FormControl(),
       id: new FormControl(),
       id_proveedor: new FormControl(),
       nombre_proveedor: new FormControl({value: null, disabled: true}),
@@ -32,6 +37,13 @@ export class ComprasFacturasComponent implements OnInit {
       fecha: new FormControl(),
       albaranes: this.albaranes
     });
+    this.ds.fetchSerie('all').subscribe((series: Serie[]) => {
+      for ( let i = 0; i < series.length; i++) {
+        this._series.set( series[i].id, series[i].nombre );
+      }
+      this.form.controls.serie.setValue( series[0].nombre, {emitEvent: false });
+      this.form.controls.id.setValue('1');
+    });
   }
   ngOnInit() {
     this.ns.navegacion.next(['Compra', 'Facturas']);
@@ -41,25 +53,37 @@ export class ComprasFacturasComponent implements OnInit {
       serie: new FormControl(),
       id: new FormControl(),
       fecha: new FormControl(),
-      base_imponible:  new FormControl(),
+      base_imponible: new FormControl(),
       iva: new FormControl(),
       importe_iva: new FormControl(),
       importe_total: new FormControl()
     }));
   }
   abrirModal(): void {
-     if (!this.modal) {
+     if (!this.modalAlbaranes) {
       const comp  = this.CFR.resolveComponentFactory(ModalSeleccionAlbaranesComponent);
-      const CRI = this.modalContainer.createComponent(comp, 0);
+      const CRI = this.modalAlbaranesContainer.createComponent(comp, 0);
       CRI.instance.eventoCerrar.subscribe(() => { this.cerrarModal(); });
-      this.modal = CRI;
+      this.modalAlbaranes = CRI;
     }
   }
   eliminarAlbaran(i: number): void {
     this.albaranes.removeAt(i);
   }
   cerrarModal() {
-    this.modal.destroy();
-    this.modal = null;
+    this.modalAlbaranes.destroy();
+    this.modalAlbaranes = null;
+  }
+  deshacerCambios() {
+
+  }
+  anadirRegistro() {
+
+  }
+  eliminarRegistro() {
+
+  }
+  guardarRegistro() {
+
   }
 }

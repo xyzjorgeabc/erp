@@ -3,6 +3,7 @@ import { BreadcrumbComponent } from './main/breadcrumb/breadcrumb.component';
 import { MenuComponent } from './main/menu/menu.component';
 import { Router } from '@angular/router';
 import { LoginService, RespuestaLoginStatusRequest } from './services/login/login.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,7 @@ export class AppComponent implements OnInit {
           localStorage.removeItem('token');
           this.router.navigate(['/login']);
         }
-      });
+      }, (err: HttpErrorResponse) => { alert('error al connectar con el backend \n' + err.message); });
     } else {
       this.router.navigate(['/login']);
     }
