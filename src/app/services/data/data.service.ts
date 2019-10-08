@@ -14,14 +14,7 @@ export class DataService {
   };
   constructor( private http: HttpClient ) {
   }
-  /*public fetchUserSettings(): UserSettings {
 
-  }*/
-  public fetchGlobalSettings(): Observable<GlobalSettings> {
-    return  this.http.post(
-      DataService.SERVER + '/fetch/global_settings', null,
-      DataService.DEFAULT_HEADERS.FETCH) as Observable<GlobalSettings>;
-  }
   public fetchArticulo(id: string): Observable<Articulo | Articulo[]> {
     return this.http.post(
       DataService.SERVER + '/fetch/articulo', JSON.stringify({articulo: {id: id}}),
@@ -99,15 +92,6 @@ export class DataService {
   }
 }
 
-export interface GlobalSettings {
-  id_serie_actual: number;
-  logo: string;
-}
-export interface UserSettings {
-  nombre_usuario: string;
-  tipo_usuario: string;
-  mantener_sesion: boolean;
-}
 export interface Serie {
   id: number;
   nombre: string;
