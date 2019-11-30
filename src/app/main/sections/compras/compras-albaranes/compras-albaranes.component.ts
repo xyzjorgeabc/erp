@@ -43,7 +43,7 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
     this.subscripcionRegs = this.registros.valueChanges.subscribe(this.calcSetTotales.bind(this));
     this.form.controls.descuento_general.valueChanges.subscribe(this.calcSetTotales.bind(this));
     this.form.controls.id.valueChanges.subscribe((val) => {
-      this.ds.fetchAlbaranCompra(this._series.getKey(this.form.controls.serie.value) + '', val).subscribe( (alb: AlbaranCompra) => {
+      this.ds.fetchAlbaranCompra(this._series.getKey(this.form.controls.serie.value), val).subscribe( (alb: AlbaranCompra) => {
         const provObs = this.ds.fetchProveedor(alb.id_proveedor + '');
         const metodoPagoObs = this.ds.fetchMetodoPago(alb.id_metodo_pago + '');
         zip(provObs, metodoPagoObs).subscribe((arr) => {
@@ -181,7 +181,7 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
 
     this.ds.fetchListaAlabranCompra(idSerie + '').subscribe((lista: MuestraAlbaranCompra[]) => {
       this.abrirModal(lista, (albSelect: MuestraAlbaranCompra) => {
-        this.ds.fetchAlbaranCompra(idSerie + '', albSelect.id + '').subscribe((alb: AlbaranCompra) => {
+        this.ds.fetchAlbaranCompra(idSerie, albSelect.id).subscribe((alb: AlbaranCompra) => {
           this.setAlbaranCompra(alb);
         });
       });

@@ -19,3 +19,7 @@ label {
   max-width: 900px;
   overflow-y: auto;
  }
+
+#sel-col {
+  text-align: center;
+}

@@ -50,7 +50,7 @@ export class DataService {
       DataService.SERVER + '/fetch/listar/albaran_compra', JSON.stringify({albaran_compra: {id_serie: idSerie}, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<MuestraAlbaranCompra[]>;
   }
-  public fetchAlbaranCompra(idSerie: string, id: string): Observable<AlbaranCompra | AlbaranCompra[]> {
+  public fetchAlbaranCompra(idSerie: number, id: number): Observable<AlbaranCompra | AlbaranCompra[]> {
     return this.http.post(
       DataService.SERVER + '/fetch/albaran_compra', JSON.stringify({albaran_compra: {id_serie: idSerie, id: id}, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<AlbaranCompra | AlbaranCompra[]>;
@@ -89,6 +89,12 @@ export class DataService {
     return this.http.post(
       DataService.SERVER + '/editar/factura_compra', JSON.stringify({factura_compra: facturaCompra, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.EDITAR) as Observable<FacturaCompra>;
+  }
+  public buscarAlbaranesCompra(fechaDesde: string, fechaHasta: string, idSerie: number): Observable<AlbaranCompra[]> {
+    return this.http.post(
+      DataService.SERVER + '/buscar/albaranes_compra',
+      JSON.stringify({albaran_compra: {id_serie: idSerie, fecha_desde: fechaDesde, fecha_hasta: fechaHasta}, token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<AlbaranCompra[]>;
   }
 }
 
@@ -195,6 +201,7 @@ export interface FacturaCompra {
   id_factura_proveedor: string;
   id_metodo_pago: number;
   descuento_general: number;
+  albaranes: AlbaranCompra[];
 }
 
 export interface PedidoVenta {
