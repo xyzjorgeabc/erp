@@ -17,6 +17,8 @@ export class AppComponent implements OnInit {
   }
   ngOnInit() {
     const token = localStorage.getItem('token');
+    this.router.navigate(['/main']);
+    return;
     if (token) {
       this.loginService.token_handshake(token)
       .subscribe((resp: RespuestaLoginStatusRequest) => {

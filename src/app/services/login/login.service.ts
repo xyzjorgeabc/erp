@@ -18,7 +18,7 @@ export interface RespuestaLoginStatusRequest {
   providedIn: 'root'
 })
 export class LoginService {
-  private static SERVER = 'http://localhost:8080';
+  private static SERVER = 'http://localhost:3000';
   public LogIn: Observable<RespuestaLoginRequest>;
   constructor( private http: HttpClient) {
     this.LogIn = new Observable<RespuestaLoginRequest>();
@@ -30,11 +30,12 @@ export class LoginService {
       {headers: new HttpHeaders({'Content-type': 'application/json'}),
       responseType: 'json'});
   }
-  public requestLogin(data: LoginData)  {
+  public requestLogin(data: LoginData) {
+    console.log(JSON.stringify(data));
     return this.http.post(
       LoginService.SERVER + '/login',
       JSON.stringify(data),
       {headers: new HttpHeaders({'Content-type': 'application/json'}),
-      responseType: 'json'});
+      });
   }
 }

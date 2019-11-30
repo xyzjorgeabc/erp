@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
-  private static SERVER = 'http://127.0.0.1:8080';
+  private static SERVER = 'http://127.0.0.1:3000';
   private static DEFAULT_HEADERS = {
     FETCH: {headers: new HttpHeaders({'Content-Type': 'application/json', 'Accept': 'application/json'})},
     EDITAR: {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'text' as 'json'}, // Error en definicion de tipos.
@@ -17,77 +17,77 @@ export class DataService {
 
   public fetchArticulo(id: string): Observable<Articulo | Articulo[]> {
     return this.http.post(
-      DataService.SERVER + '/fetch/articulo', JSON.stringify({articulo: {id: id}}),
+      DataService.SERVER + '/fetch/articulo', JSON.stringify({articulo: {id: id}, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<Articulo | Articulo[]>;
   }
   public fetchProveedor(id: string): Observable<Proveedor | Proveedor[]> {
     return this.http.post(
-      DataService.SERVER + '/fetch/proveedor', JSON.stringify({proveedor: {id: id}}),
+      DataService.SERVER + '/fetch/proveedor', JSON.stringify({proveedor: {id: id}, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<Proveedor | Proveedor[]>;
   }
   public fetchCategoria(id: string): Observable<Categoria | Categoria[]> {
     return this.http.post(
-      DataService.SERVER + '/fetch/categoria', JSON.stringify({categoria: {id: id}}),
+      DataService.SERVER + '/fetch/categoria', JSON.stringify({categoria: {id: id}, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<Categoria| Categoria[]>;
   }
   public fetchMetodoPago(id: string): Observable<MetodoPago | MetodoPago[]> {
     return this.http.post(
-      DataService.SERVER + '/fetch/metodo_pago', JSON.stringify({metodo_pago: {id: id}}),
+      DataService.SERVER + '/fetch/metodo_pago', JSON.stringify({metodo_pago: {id: id}, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<MetodoPago | MetodoPago[]>;
   }
   public fetchCliente(id: string): Observable<Cliente | Cliente[]> {
     return this.http.post(
-      DataService.SERVER + '/fetch/cliente', JSON.stringify({cliente: { id: id }}),
+      DataService.SERVER + '/fetch/cliente', JSON.stringify({cliente: { id: id }, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<Cliente | Cliente[]>;
   }
   public fetchSerie(id: string): Observable<Serie | Serie[]> {
     return this.http.post(
-      DataService.SERVER + '/fetch/serie', JSON.stringify({serie: {id: id}}),
+      DataService.SERVER + '/fetch/serie', JSON.stringify({serie: {id: id}, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<Serie | Serie[]>;
   }
   public fetchListaAlabranCompra(idSerie: string): Observable<MuestraAlbaranCompra[]> {
     return this.http.post(
-      DataService.SERVER + '/fetch/listar/albaran_compra', JSON.stringify({albaran_compra: {id_serie: idSerie}}),
+      DataService.SERVER + '/fetch/listar/albaran_compra', JSON.stringify({albaran_compra: {id_serie: idSerie}, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<MuestraAlbaranCompra[]>;
   }
   public fetchAlbaranCompra(idSerie: string, id: string): Observable<AlbaranCompra | AlbaranCompra[]> {
     return this.http.post(
-      DataService.SERVER + '/fetch/albaran_compra', JSON.stringify({albaran_compra: {id_serie: idSerie, id: id}}),
+      DataService.SERVER + '/fetch/albaran_compra', JSON.stringify({albaran_compra: {id_serie: idSerie, id: id}, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<AlbaranCompra | AlbaranCompra[]>;
   }
   public fetchFacturaCompra(idSerie: string, id: string): Observable<FacturaCompra | FacturaCompra[]> {
     return this.http.post(
-      DataService.SERVER + '/fetch/factura_compra', JSON.stringify({factura_compra: {id_serie: idSerie, id: id}}),
+      DataService.SERVER + '/fetch/factura_compra', JSON.stringify({factura_compra: {id_serie: idSerie, id: id}, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<FacturaCompra | FacturaCompra[]>;
   }
   public editarArticulo(articulo: Articulo): Observable<Articulo> {
     return this.http.post(
-      DataService.SERVER + '/editar/articulo', JSON.stringify({articulo: articulo}),
+      DataService.SERVER + '/editar/articulo', JSON.stringify({articulo: articulo, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.EDITAR) as Observable<Articulo>;
   }
   public editarProveedor(proveedor: Proveedor): Observable<Proveedor> {
     return this.http.post(
-      DataService.SERVER + '/editar/proveedor', JSON.stringify({proveedor: proveedor}),
+      DataService.SERVER + '/editar/proveedor', JSON.stringify({proveedor: proveedor, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.EDITAR) as Observable<Proveedor>;
   }
   public editarCategoria(categoria: Categoria): Observable<Categoria> {
     return this.http.post(
-      DataService.SERVER + '/editar/categoria', JSON.stringify({categoria: categoria}),
+      DataService.SERVER + '/editar/categoria', JSON.stringify({categoria: categoria, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.EDITAR) as Observable<Categoria>;
   }
   public editarCliente(cliente: Cliente): Observable<Cliente> {
     return this.http.post(
-      DataService.SERVER + '/editar/cliente', JSON.stringify({cliente: cliente}),
+      DataService.SERVER + '/editar/cliente', JSON.stringify({cliente: cliente, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.EDITAR) as Observable<Cliente>;
   }
   public editarAlbaranCompra(albaranCompra: AlbaranCompra): Observable<AlbaranCompra> {
     return this.http.post(
-      DataService.SERVER + '/editar/albaran_compra', JSON.stringify({albaran_compra: albaranCompra}),
+      DataService.SERVER + '/editar/albaran_compra', JSON.stringify({albaran_compra: albaranCompra, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.EDITAR) as Observable<AlbaranCompra>;
   }
   public editarFacturaCompra(facturaCompra: FacturaCompra): Observable<FacturaCompra> {
     return this.http.post(
-      DataService.SERVER + '/editar/factura_compra', JSON.stringify({factura_compra: facturaCompra}),
+      DataService.SERVER + '/editar/factura_compra', JSON.stringify({factura_compra: facturaCompra, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.EDITAR) as Observable<FacturaCompra>;
   }
 }
