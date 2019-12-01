@@ -1,5 +1,9 @@
 <main>
-  <app-nav-bar [titulo]="titulo"></app-nav-bar>
+  <app-nav-bar [titulo]="'Edición de facturas de venta'"
+  (siguienteRegistro)="siguienteRegistro();"
+  (anteriorRegistro)="anteriorRegistro();"
+  (anadirRegistro)="anadirRegistro();"
+  (eliminarRegistro)="eliminarRegistro();"></app-nav-bar>
   <div id="form-container" class="container-fluid full-size">
     <form class="row p-5" autocomplete="off" [formGroup]="form">
       <div class="col-12">
@@ -8,13 +12,20 @@
             <div class="form-row">
               <div class="col-4">
                 <label for="series">Serie</label>
-                <select id="series" class="form-control mb-3">
-                  <option *ngFor="let serie of series">{{serie}}</option>
+                <select id="series-factura" formControlName="serie" class="form-control mb-3">
+                  <option *ngFor="let nombre_serie of _series.getValues();">{{nombre_serie}}</option>
                 </select>
               </div>
-              <div class="col-8">
+              <div class="col-4">
                 <label for="id">ID Factura</label>
-                <app-fake-input id="id" [type]="'unsigInt'" [int]="5" formControlName="id" class="form-control mb-3"></app-fake-input>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button type="button" (click)="abrirModalFactura();" class="btn btn-primary form-control">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                  <input type="text" id="id" formControlName="id" class="form-control mb-3">
+                </div>
               </div>
             </div>
             <div class="form-row">
@@ -26,8 +37,8 @@
                       <i class="fas fa-search"></i>
                     </button>
                   </div>
-                  <app-fake-input id="id-cliente" [type]="'unsigInt'" [int]="5" formControlName="id_cliente" class="form-control col-2 mb-3"></app-fake-input>
-                  <app-fake-input id="nombre-cliente" [type]="'text'" [int]="50" formControlName="nombre_cliente" class="form-control mb-3"></app-fake-input>
+                  <input type="text" id="id-cliente" formControlName="id_cliente" class="form-control col-2 mb-3">
+                  <input type="text" id="nombre-cliente" formControlName="nombre_cliente" class="form-control mb-3">
                 </div>
               </div>
             </div>
@@ -36,7 +47,7 @@
             <div class="form-row">
               <div class="col-6">
                 <label for="fecha">Fecha Factura</label>
-                <app-fecha-input [id]="'fecha'" [btn]="true" class="form-row mb-3"></app-fecha-input>
+                <app-fecha-input id="fecha" formControlName="fecha" [btn]="true" class="form-row mb-3"></app-fecha-input>
               </div>
             </div>
             <div class="form-row">
@@ -48,13 +59,13 @@
                       <i class="fas fa-search"></i>
                     </button>
                   </div>
-                  <app-fake-input id="id-metodo-pago" [type]="'unsigInt'" [int]="5" formControlName="id_metodo_pago" class="form-control col-2 mb-3"></app-fake-input>
-                  <app-fake-input id="nombre-metodo-pago" [type]="'text'" [int]="50" formControlName="nombre_metodo_pago" class="form-control mb-3"></app-fake-input>
+                  <input type="text" id="id-metodo-pago" formControlName="id_metodo_pago" class="form-control col-2 mb-3">
+                  <input type="text" id="nombre-metodo-pago" formControlName="nombre_metodo_pago" class="form-control mb-3">
                 </div>
               </div>
               <div class="col-3 ">
                 <label for="descuento-general">Descuento general</label>
-                <app-fake-input id="descuento-general" [type]="'unsigFloat'" [int]="3" [dec]="2" formControlName="descuento_general" class="form-control mb-3"></app-fake-input>
+                <input type="text" id="descuento-general" formControlName="descuento_general" class="form-control mb-3">
               </div>
             </div>
           </div>
@@ -64,46 +75,38 @@
         <table class="table table-striped table-bordered table-sm">
           <thead class="thead-light"> 
             <tr>
-              <th scope="col" *ngFor="let columna of columnas" class="font-weight-normal text-nowrap rs-x">
-                {{columna.nombre}}
-              </th>
+              <th scope="col" class="font-weight-normal text-nowrap rs-x">ID serie</th>
+              <th scope="col" class="font-weight-normal text-nowrap rs-x">ID</th>
+              <th scope="col" class="font-weight-normal text-nowrap rs-x">fecha</th>
+              <th scope="col" class="font-weight-normal text-nowrap rs-x">ID cliente</th>
               <th scope="col" class="butn-col"></th>
-            </tr>
+              </tr>
           </thead>
           <tbody formArrayName="albaranes">
             <ng-container *ngFor="let albaran of albaranes.controls; let i = index;">
-            <tr [formGroupName]="i">
-              <td class="p-1" >
-                <app-fake-input [type]="" id="serie" formControlName="serie" class="form-control form-control-sm rounded-0 border-0" [attr.disabled]=""></app-fake-input>
-              </td>
-              <td class="p-1">
-                <app-fake-input [type]="" id="id" formControlName="id" class="form-control form-control-sm rounded-0 border-0" [attr.disabled]=""></app-fake-input>
-              </td>
-              <td class="p-1">
-                <app-fake-input [type]="" [id]="fecha" formControlName="fecha" class="form-control form-control-sm rounded-0 border-0" [attr.disabled]=""></app-fake-input>
-              </td>
-              <td class="p-1">
-                <app-fake-input [type]="" id="base-imponible" formControlName="base_imponible" class="form-control form-control-sm rounded-0 border-0" [attr.disabled]=""></app-fake-input>
-              </td>
-              <td class="p-1">
-                <app-fake-input [type]="" id="iva" formControlName="iva" class="form-control form-control-sm rounded-0 border-0" [attr.disabled]=""></app-fake-input>
-              </td>
-              <td class="p-1">
-                <app-fake-input [type]="" id="importe-iva" formControlName="importe_iva" class="form-control form-control-sm rounded-0 border-0" [attr.disabled]=""></app-fake-input>
-              </td>
-              <td class="p-1">
-                <app-fake-input [type]="" id="importe-total" formControlName="importe_total" class="form-control form-control-sm rounded-0 border-0" [attr.disabled]=""></app-fake-input>
-              </td>
-              <td class="px-0 butn-col">
-                <div class="del">
-                  <button type="button" class="btn btn-delete" (click)="eliminarFila(i)"><i class="fas fa-times"></i></button>
-                </div>
-              </td>
-            </tr>
+              <tr [formGroupName]="i">
+                <td class="p-1" >
+                  <input type="text" id="id-serie" formControlName="id_serie" class="form-control form-control-sm rounded-0 border-0">
+                </td>
+                <td class="p-1">
+                  <input type="text" id="id" formControlName="id" class="form-control form-control-sm rounded-0 border-0">
+                </td>
+                <td class="p-1">
+                  <input type="text" id="fecha" formControlName="fecha" class="form-control form-control-sm rounded-0 border-0">
+                </td>
+                <td class="p-1">
+                  <input type="text" id="id-cliente" formControlName="id_cliente" class="form-control form-control-sm rounded-0 border-0">
+                </td>
+                <td class="px-0 butn-col">
+                  <div class="del">
+                    <button type="button" class="btn btn-delete" (click)="eliminarAlbaran(i)"><i class="fas fa-times"></i></button>
+                  </div>
+                </td>
+              </tr>
             </ng-container>
           </tbody>
         </table>
-        <button (click)="anadirAlbaranes()" class="btn btn-primary">Añadir</button>
+        <button (click)="abrirModal();" class="btn btn-primary">Añadir</button>
       </div>
       <div class="col-12 d-flex justify-content-center mt-5">
         <button type="submit" class="btn btn-success mr-5">Guardar</button>

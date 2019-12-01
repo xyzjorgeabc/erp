@@ -179,7 +179,7 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
   public abrirModalAlbaran(): void {
     const idSerie = this._series.getKey(this.form.controls.serie.value);
 
-    this.ds.fetchListaAlabranCompra(idSerie + '').subscribe((lista: MuestraAlbaranCompra[]) => {
+    this.ds.fetchListaAlbaranCompra(idSerie + '').subscribe((lista: MuestraAlbaranCompra[]) => {
       this.abrirModal(lista, (albSelect: MuestraAlbaranCompra) => {
         this.ds.fetchAlbaranCompra(idSerie, albSelect.id).subscribe((alb: AlbaranCompra) => {
           this.setAlbaranCompra(alb);

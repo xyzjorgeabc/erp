@@ -1,21 +1,22 @@
-import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
-import { DataService, Serie, AlbaranCompra } from 'src/app/services/data/data.service';
+import { DataService, Serie, AlbaranVenta } from 'src/app/services/data/data.service';
 import { BiMap } from '../utils/ultis';
 
 @Component({
-  selector: 'app-modal-seleccion-albaranes',
-  templateUrl: './modal-seleccion-albaranes.component.html',
-  styleUrls: ['./modal-seleccion-albaranes.component.css']
+  selector: 'app-modal-seleccion-albaranes-venta',
+  templateUrl: './modal-seleccion-albaranes-venta.component.html',
+  styleUrls: ['./modal-seleccion-albaranes-venta.component.css']
 })
-export class ModalSeleccionAlbaranesComponent implements OnInit {
+export class ModalSeleccionAlbaranesVentaComponent implements OnInit {
+
   public _series: BiMap<number, string>;
   public form: FormGroup;
   public albaranes: FormArray;
   @Output()
   eventoCerrar = new EventEmitter<void>();
   @Output()
-  eventoSeleccionAlbaranes = new EventEmitter<AlbaranCompra[]>();
+  eventoSeleccionAlbaranes = new EventEmitter<AlbaranVenta[]>();
   constructor(private ds: DataService) {
     this._series = new BiMap();
     this.albaranes = new FormArray([]);
@@ -35,15 +36,14 @@ export class ModalSeleccionAlbaranesComponent implements OnInit {
     this.form.controls.fecha_desde.valueChanges.subscribe(this.buscarAlbaranes.bind(this));
     this.form.controls.fecha_hasta.valueChanges.subscribe(this.buscarAlbaranes.bind(this));
   }
-  private setLista(albs: AlbaranCompra[]): void {
+  private setLista(albs: AlbaranVenta[]): void {
     this.albaranes.clear();
     for (let i = 0; i < albs.length; i++) {
       this.albaranes.push(new FormGroup({
         id_serie: new FormControl({value: albs[i].id_serie, disabled: true}),
         id: new FormControl({value: albs[i].id, disabled: true}),
-        id_proveedor: new FormControl({value: albs[i].id_proveedor, disabled: true}),
+        id_cliente: new FormControl({value: albs[i].id_cliente, disabled: true}),
         fecha: new FormControl({value: albs[i].fecha, disabled: true}),
-        id_albaran_proveedor: new FormControl({value: albs[i].id_albaran_proveedor, disabled: true}),
         seleccionado: new FormControl(false)
       }));
     }
@@ -56,10 +56,10 @@ export class ModalSeleccionAlbaranesComponent implements OnInit {
         return void 0;
       }
 
-    this.ds.buscarAlbaranesCompra(
+    this.ds.buscarAlbaranesVenta(
       this.form.controls.fecha_desde.value,
       this.form.controls.fecha_hasta.value,
-      this._series.getKey(this.form.controls.serie.value)).subscribe((result: AlbaranCompra[]) => {
+      this._series.getKey(this.form.controls.serie.value)).subscribe((result: AlbaranVenta[]) => {
         this.setLista(result);
       });
   }

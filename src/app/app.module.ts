@@ -32,6 +32,7 @@ import { SelectorFechaComponent } from './main/utilidades/selector-fecha/selecto
 import { FechaInputComponent } from './main/utilidades/fecha-input/fecha-input.component';
 import { FakeInputComponent } from './main/utilidades/fake-input/fake-input.component';
 import { ModalMuestraSeleccionComponent } from './main/utilidades/modal-muestra-seleccion/modal-muestra-seleccion.component';
+import { ModalSeleccionAlbaranesVentaComponent } from './main/utilidades/modal-seleccion-albaranes-venta/modal-seleccion-albaranes-venta.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { ModalMuestraSeleccionComponent } from './main/utilidades/modal-muestra-
     FechaInputComponent,
     FakeInputComponent,
     ModalMuestraSeleccionComponent,
+    ModalSeleccionAlbaranesVentaComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,7 +69,7 @@ import { ModalMuestraSeleccionComponent } from './main/utilidades/modal-muestra-
     ReactiveFormsModule,
     HttpClientModule
   ],
-  entryComponents: [FilaComponent, ModalSeleccionAlbaranesComponent],
+  entryComponents: [FilaComponent, ModalSeleccionAlbaranesComponent, ModalSeleccionAlbaranesVentaComponent],
   providers: [CalcService, NavegacionService, LoginService, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
