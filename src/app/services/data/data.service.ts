@@ -117,6 +117,12 @@ export class DataService {
       JSON.stringify({albaran_venta: {id_serie: idSerie, fecha_desde: fechaDesde, fecha_hasta: fechaHasta}, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<AlbaranVenta[]>;
   }
+  public statsGastos(): Observable<Array<number>> {
+    return this.http.post(
+      DataService.SERVER + '/stats/gastos',
+      JSON.stringify({token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<Array<number>>;
+  }
 }
 
 export interface Serie {
