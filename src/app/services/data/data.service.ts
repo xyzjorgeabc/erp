@@ -123,6 +123,24 @@ export class DataService {
       JSON.stringify({token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<Array<number>>;
   }
+  public statsTopProveedores(): Observable<Object> {
+    return this.http.post(
+      DataService.SERVER + '/stats/top_prov',
+      JSON.stringify({token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<Object>;
+  }
+  public statsVentas(): Observable<Array<number>> {
+    return this.http.post(
+      DataService.SERVER + '/stats/ventas',
+      JSON.stringify({token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<Array<number>>;
+  }
+  public statsTopClientes(): Observable<Object> {
+    return this.http.post(
+      DataService.SERVER + '/stats/top_clientes',
+      JSON.stringify({token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<Object>;
+  }
 }
 
 export interface Serie {
