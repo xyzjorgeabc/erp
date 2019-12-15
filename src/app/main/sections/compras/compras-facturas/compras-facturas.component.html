@@ -33,7 +33,7 @@
                 <label for="id-proveedor">Proveedor</label>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <button type="button" class="btn btn-primary form-control">
+                    <button type="button" (click)="abrirModalProveedor();" class="btn btn-primary form-control">
                       <i class="fas fa-search"></i>
                     </button>
                   </div>
@@ -59,7 +59,7 @@
                 <label for="id-metodo-pago">Método de pago</label>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <button type="button" class="btn btn-primary form-control">
+                    <button type="button" (click)="abrirModalMetodoPago();" class="btn btn-primary form-control">
                       <i class="fas fa-search"></i>
                     </button>
                   </div>
@@ -83,7 +83,7 @@
               <th scope="col" class="font-weight-normal text-nowrap rs-x">ID</th>
               <th scope="col" class="font-weight-normal text-nowrap rs-x">fecha</th>
               <th scope="col" class="font-weight-normal text-nowrap rs-x">ID proveedor</th>
-              <th scope="col" class="font-weight-normal text-nowrap rs-x">ID factura proveedor</th>
+              <th scope="col" class="font-weight-normal text-nowrap rs-x">ID albaran proveedor</th>
               <th scope="col" class="butn-col"></th>
             </tr>
           </thead>
@@ -107,20 +107,21 @@
                 </td>
                 <td class="px-0 butn-col">
                   <div class="del">
-                    <button type="button" class="btn btn-delete" (click)="eliminarAlbaran(i)"><i class="fas fa-times"></i></button>
+                    <button type="button" class="btn btn-delete" (click)="eliminarFila(i)"><i class="fas fa-times"></i></button>
                   </div>
                 </td>
               </tr>
             </ng-container>
           </tbody>
         </table>
-        <button (click)="abrirModal()" class="btn btn-primary">Añadir</button>
+        <button (click)="abrirModalAlbaranes()" class="btn btn-primary">Añadir</button>
       </div>
       <div class="col-12 d-flex justify-content-center mt-5">
         <button type="button" class="btn btn-success mr-5" (click)="guardarRegistro();">Guardar</button>
-        <button type="button" [attr.disabled]="form.pristine" class="btn btn-danger">Reset</button>
+        <button type="button" [disabled]="form.pristine" class="btn btn-danger" (click)="deshacerCambios();">Reset</button>
       </div>
     </form>
   </div>
+  <ng-container #modal></ng-container>
   <ng-container #modalAlbaranes></ng-container>
 </main>

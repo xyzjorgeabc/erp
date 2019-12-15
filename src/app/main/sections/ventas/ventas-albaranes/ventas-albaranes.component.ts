@@ -49,14 +49,20 @@ export class VentasAlbaranesComponent extends ComponenteEditor< AlbaranVenta | M
         const cliObs = this.ds.fetchCliente(alb.id_cliente + '');
         const metodoPagoObs = this.ds.fetchMetodoPago(alb.id_metodo_pago + '');
         zip(cliObs, metodoPagoObs).subscribe((arr) => {
-          console.log(alb);
           this.setAlbaranVenta(alb);
           this.setCliente(arr[0] as Cliente, false);
           this.setMetodoPago(arr[1] as MetodoPago, false);
           this.uneditedFormState = this.form.getRawValue();
           this.form.markAsPristine();
         });
-      });
+      }, (err) => {
+        const serie = this.form.controls.serie.value;
+        const id = this.form.controls.id.value;
+        this.registros.clear();
+        this.form.reset('', {emitEvent: false});
+        this.form.controls.id.setValue(id, {emitEvent: false});
+        this.form.controls.serie.setValue(serie, {emitEvent: false});
+      } );
     });
     this.form.controls.id_cliente.valueChanges.subscribe( (id: string) => {
       this.ds.fetchCliente(id).subscribe((cli: Cliente) => {
@@ -209,19 +215,33 @@ export class VentasAlbaranesComponent extends ComponenteEditor< AlbaranVenta | M
       });
     });
   }
-  public guardar(): void {
-    console.log(this.form.value);
-  }
   public eliminarRegistro(): void {
 
   }
   public guardarRegistro(): void {
-
+    const albaran = this.form.value;
+    albaran.id_serie = this._series.getKey(albaran.serie);
+    this.uneditedFormState = this.form.getRawValue();
+    this.form.markAsPristine();
+    this.ds.editarAlbaranVenta(albaran).subscribe(() => {
+    });
   }
   public anadirRegistro(): void {
-
+    this.ds.fetchAlbaranVenta( this._series.getKey(this.form.controls.serie.value + '') , 'last')
+    .subscribe((alb: AlbaranVenta) => {
+      this.form.reset('', {emitEvent: false});
+      this.form.controls.serie.setValue(this._series.getValue(alb.id_serie), {emitEvent: false});
+      this.form.controls.id.setValue(alb.id + 1 + '', {emitEvent: false});
+    });
   }
   public deshacerCambios(): void {
-
+    while (this.uneditedFormState.registros.length > this.registros.length) {
+      this.registros.push(this.getNuevaFila());
+    }
+    while (this.uneditedFormState.registros.length < this.registros.length) {
+      this.registros.removeAt(0);
+    }
+    super.deshacerCambios();
+    this.calcSetTotales();
   }
 }

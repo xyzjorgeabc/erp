@@ -44,6 +44,5 @@ export class VentasPedidosComponent implements OnInit {
     this.registros.removeAt(i);
   }
   guardar(): void {
-    console.log(this.form.value);
   }
 }

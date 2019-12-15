@@ -122,7 +122,7 @@ export class MantenimientoClientesComponent extends ComponenteEditor<Cliente | M
   public anadirRegistro(): void {
     this.ds.fetchCliente('last').subscribe((cl: Cliente) => {
       this.form.reset('', {emitEvent: false});
-      this.form.controls.id.setValue(+cl.id + 1, {emitValue: false});
+      this.form.controls.id.setValue(+cl.id + 1, {emitEvent: false});
       this.uneditedFormState = null;
     });
   }

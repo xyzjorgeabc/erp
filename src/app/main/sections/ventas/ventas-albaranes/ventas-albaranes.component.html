@@ -33,7 +33,7 @@
                 <label for="id-cliente">Cliente</label>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <button type="button" class="btn btn-primary form-control">
+                    <button type="button" (click)="abrirModalCliente();" class="btn btn-primary form-control">
                       <i class="fas fa-search"></i>
                     </button>
                   </div>
@@ -55,7 +55,7 @@
                 <label for="id-metodo-pago">Método de pago</label>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <button type="button" class="btn btn-primary form-control">
+                    <button type="button" (click)="abrirModalMetodoPago();" class="btn btn-primary form-control">
                       <i class="fas fa-search"></i>
                     </button>
                   </div>
@@ -141,8 +141,8 @@
         </form>
       </div>
       <div class="col-12 d-flex justify-content-center mt-5">
-        <button type="submit" (click)="guardar();" class="btn btn-success mr-5">Guardar</button>
-        <button type="reset" class="btn btn-danger">Reset</button>
+        <button type="button" (click)="guardarRegistro();" class="btn btn-success mr-5">Guardar</button>
+        <button type="button" (click)="deshacerCambios();" [disabled]="form.pristine" class="btn btn-danger">Reset</button>
       </div>
     </form>
   </div>

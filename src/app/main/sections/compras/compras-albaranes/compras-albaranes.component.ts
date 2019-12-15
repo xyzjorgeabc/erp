@@ -2,7 +2,7 @@ import { Component, OnInit, ComponentFactoryResolver } from '@angular/core';
 import { zip, Subscription } from 'rxjs';
 import { NavegacionService } from '../../../../services/navegacion/navegacion.service';
 import { FormControl, FormGroup, FormArray } from '@angular/forms';
-import { DataService, AlbaranCompra, Serie, MetodoPago, Proveedor, RegistroAlbaranCompra, MuestraAlbaranCompra, Articulo} from 'src/app/services/data/data.service';
+import { DataService, AlbaranCompra, Serie, MetodoPago, Proveedor, RegistroAlbaranCompra, MuestraAlbaranCompra, Articulo, AlbaranVenta} from 'src/app/services/data/data.service';
 import { CompEditable, ComponenteEditor } from '../../mantenimiento/mantenimiento-comp';
 import { sumarPorc, restarPorc, getPorc, fixNoRound } from '../../../../services/calc/calc';
 import { BiMap} from '../../../utilidades/utils/ultis';
@@ -43,7 +43,8 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
     this.subscripcionRegs = this.registros.valueChanges.subscribe(this.calcSetTotales.bind(this));
     this.form.controls.descuento_general.valueChanges.subscribe(this.calcSetTotales.bind(this));
     this.form.controls.id.valueChanges.subscribe((val) => {
-      this.ds.fetchAlbaranCompra(this._series.getKey(this.form.controls.serie.value), val).subscribe( (alb: AlbaranCompra) => {
+      this.ds.fetchAlbaranCompra(this._series.getKey(this.form.controls.serie.value), val)
+      .subscribe( (alb: AlbaranCompra) => {
         const provObs = this.ds.fetchProveedor(alb.id_proveedor + '');
         const metodoPagoObs = this.ds.fetchMetodoPago(alb.id_metodo_pago + '');
         zip(provObs, metodoPagoObs).subscribe((arr) => {
@@ -53,6 +54,13 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
           this.uneditedFormState = this.form.getRawValue();
           this.form.markAsPristine();
         });
+      }, (err) => {
+        const serie = this.form.controls.serie.value;
+        const id = this.form.controls.id.value;
+        this.registros.clear();
+        this.form.reset('', {emitEvent: false});
+        this.form.controls.id.setValue(id, {emitEvent: false});
+        this.form.controls.serie.setValue(serie, {emitEvent: false});
       });
     });
     this.form.controls.id_proveedor.valueChanges.subscribe( (id: string) => {
@@ -182,7 +190,14 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
     this.ds.fetchListaAlbaranCompra(idSerie + '').subscribe((lista: MuestraAlbaranCompra[]) => {
       this.abrirModal(lista, (albSelect: MuestraAlbaranCompra) => {
         this.ds.fetchAlbaranCompra(idSerie, albSelect.id).subscribe((alb: AlbaranCompra) => {
-          this.setAlbaranCompra(alb);
+          const metObs = this.ds.fetchMetodoPago(alb.id_metodo_pago + '');
+          const provObs = this.ds.fetchProveedor(alb.id_proveedor + '');
+          zip(provObs, metObs).subscribe((result: [Proveedor, MetodoPago]) => {
+            this.setAlbaranCompra(alb);
+            this.setRegistros(alb.registros);
+            this.setProveedor(result[0], false);
+            this.setMetodoPago(result[1], false);
+          });
         });
       });
     } );
@@ -221,7 +236,12 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
 
   }
   public anadirRegistro(): void {
-
+    this.ds.fetchAlbaranCompra( this._series.getKey(this.form.controls.serie.value + '') , 'last')
+    .subscribe((alb: AlbaranCompra) => {
+      this.form.reset('', {emitEvent: false});
+      this.form.controls.serie.setValue(this._series.getValue(alb.id_serie), {emitEvent: false});
+      this.form.controls.id.setValue(alb.id + 1 + '', {emitEvent: false});
+    });
   }
   public deshacerCambios(): void {
     while (this.uneditedFormState.registros.length > this.registros.length) {

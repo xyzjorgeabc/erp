@@ -48,7 +48,6 @@ export class VentasFacturasComponent extends ComponenteEditor<FacturaVenta | Cli
 
     this.form.controls.id.valueChanges.subscribe((val) => {
       this.ds.fetchFacturaVenta(this._series.getKey(this.form.controls.serie.value) + '', val).subscribe( (fact: FacturaVenta) => {
-        console.log(fact);
         const cliObs = this.ds.fetchCliente(fact.id_cliente + '');
         const metObs = this.ds.fetchMetodoPago(fact.id_metodo_pago + '');
         zip(cliObs, metObs).subscribe((result: [Cliente, MetodoPago]) => {
@@ -88,8 +87,6 @@ export class VentasFacturasComponent extends ComponenteEditor<FacturaVenta | Cli
       return (el.id === alb.id) && (el.id_serie === alb.id_serie);
      });
     });
-    console.log(this.albaranes.getRawValue());
-    console.log(filtered_albs);
     for (let i = 0; i < filtered_albs.length; i++) {
       this.albaranes.push(new FormGroup({
         id_serie: new FormControl({value: filtered_albs[i].id_serie, disabled: true}),

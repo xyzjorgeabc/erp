@@ -31,7 +31,6 @@ export class LoginService {
       responseType: 'json'});
   }
   public requestLogin(data: LoginData) {
-    console.log(JSON.stringify(data));
     return this.http.post(
       LoginService.SERVER + '/login',
       JSON.stringify(data),
