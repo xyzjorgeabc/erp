@@ -17,24 +17,24 @@
                   <i class="fas fa-search"></i>
                 </button>
               </div>
-              <app-fake-input id="id" [type]="'unsigInt'" [int]="5" formControlName="id" class="form-control mb-3"></app-fake-input>
+              <input id="id" type="text" formControlName="id" class="form-control mb-3">
             </div>
           </div>
           <div class="col-sm">
             <label for="nombre">Nombre</label>
-            <app-fake-input id="nombre" [type]="'text'" [len]="50" formControlName="nombre" class="form-control mb-3"></app-fake-input>
+            <input id="nombre" type="text" formControlName="nombre" class="form-control mb-3">
           </div>
         </div>
         <div class="form-row">
           <div class="col-md-12">
             <label for="descripcion">Descripción</label>
-            <app-fake-input id="descripcion" [type]="'text'" [len]="100" formControlName="descripcion" class="form-control mb-3"></app-fake-input>
+            <input id="descripcion" type="text" formControlName="descripcion" class="form-control mb-3">
           </div>
         </div>
         <div class="form-row">
           <div class="col-6 col-sm-2">
             <label for="iva_por_defecto">IVA por defecto</label>
-            <app-fake-input id="iva_por_defecto" [type]="'unsigFloat'" [int]="3" [dec]="2" formControlName="iva_por_defecto" class="form-control mb-3"></app-fake-input>
+            <input id="iva_por_defecto" type="text" formControlName="iva_por_defecto" class="form-control mb-3">
           </div>
         </div>
       </div>
@@ -43,6 +43,9 @@
         <button type="button" (click)="deshacerCambios();" [disabled]="form.pristine" class="btn btn-danger">Deshacer</button>
       </div>
     </form>
+    <div class="row px-0 py-0">
+      <app-warning-panel [errors]="errors" class="col"></app-warning-panel>
+    </div>
   </div>
   <ng-container #modal></ng-container>
 </main>

@@ -33,6 +33,7 @@ import { FechaInputComponent } from './main/utilidades/fecha-input/fecha-input.c
 import { FakeInputComponent } from './main/utilidades/fake-input/fake-input.component';
 import { ModalMuestraSeleccionComponent } from './main/utilidades/modal-muestra-seleccion/modal-muestra-seleccion.component';
 import { ModalSeleccionAlbaranesVentaComponent } from './main/utilidades/modal-seleccion-albaranes-venta/modal-seleccion-albaranes-venta.component';
+import { WarningPanelComponent } from './main/warning-panel/warning-panel.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { ModalSeleccionAlbaranesVentaComponent } from './main/utilidades/modal-s
     FakeInputComponent,
     ModalMuestraSeleccionComponent,
     ModalSeleccionAlbaranesVentaComponent,
+    WarningPanelComponent,
   ],
   imports: [
     BrowserModule,

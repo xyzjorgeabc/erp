@@ -5,6 +5,8 @@ import { CalcService as Nums} from '../../../../services/calc/calc.service';
 import { NavegacionService } from '../../../../services/navegacion/navegacion.service';
 import { DataService, Articulo, Proveedor, Categoria } from '../../../../services/data/data.service';
 import { ComponenteEditor, CompEditable } from '../mantenimiento-comp';
+import { ValidatorService } from '../../../../services/validator/validator.service';
+
 @Component({
   selector: 'app-mantenimiento-articulos',
   templateUrl: './mantenimiento-articulos.component.html',
@@ -16,24 +18,24 @@ export class MantenimientoArticulosComponent extends ComponenteEditor<Articulo|P
   constructor(private ns: NavegacionService, private ds: DataService, protected CFR: ComponentFactoryResolver) {
     super();
     this.form = new FormGroup({
-      id:                    new FormControl('', {updateOn: 'change'}),
-      nombre:                new FormControl(),
-      descripcion:           new FormControl(),
-      id_categoria:          new FormControl(),
+      id:                    new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id articulo')}),
+      nombre:                new FormControl('', {validators: ValidatorService.isString.bind(null, 'nombre articulo')}),
+      descripcion:           new FormControl('', {validators: ValidatorService.isString.bind(null, 'descripción articulo')}),
+      id_categoria:          new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id categoría')}),
       categoria_nombre:      new FormControl({value: null, disabled: true}),
-      id_proveedor:          new FormControl(),
+      id_proveedor:          new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id proveedor')}),
       proveedor_nombre:      new FormControl({value: null, disabled: true}),
-      cantidad_master:       new FormControl(),
+      cantidad_master:       new FormControl('', {validators: ValidatorService.isNumber.bind(null, 'cantidad master')}),
       stock:                 new FormControl({value: null, disabled: true}),
-      iva:                   new FormControl('', {updateOn: 'change'}),
+      iva:                   new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'iva')}),
       coste_anterior:        new FormControl({value: null, disabled: true}),
-      coste:                 new FormControl('', {updateOn: 'change'}),
+      coste:                 new FormControl('', {updateOn: 'change', validators: ValidatorService.isNumber.bind(null, 'coste')}),
       coste_mas_iva:         new FormControl({value: null, disabled: true}),
       margen_detalle:        new FormControl({value: null, disabled: true}),
-      pvp_detalle:           new FormControl('', {updateOn: 'change'}),
+      pvp_detalle:           new FormControl('', {updateOn: 'change', validators: ValidatorService.isNumber.bind(null, 'pvp_detalle')}),
       margen_mayor:          new FormControl({value: null, disabled: true}),
-      pvp_mayor:             new FormControl('', {updateOn: 'change'})
-    });
+      pvp_mayor:             new FormControl('', {updateOn: 'change', validators: ValidatorService.isNumber.bind(null, 'pvp_mayor')})
+    }, {updateOn: 'change'});
   }
   ngOnInit() {
 
@@ -52,6 +54,7 @@ export class MantenimientoArticulosComponent extends ComponenteEditor<Articulo|P
           this.setCategoria(arr[0] as Categoria, false);
           this.setProveedor(arr[1] as Proveedor, false);
           this.uneditedFormState = this.form.getRawValue();
+          this.form.updateValueAndValidity();
         });
       }, (err) => {
           if (err.status === 404) {
@@ -99,6 +102,7 @@ export class MantenimientoArticulosComponent extends ComponenteEditor<Articulo|P
       this.onPVPChange(val, 'mayor');
     });
     this.form.controls.id.setValue('1');
+    this.form.valueChanges.subscribe(this.updateErrors.bind(this));
   }
   onIvaChange(v: number): void {
     if (v === null) {
@@ -150,14 +154,14 @@ export class MantenimientoArticulosComponent extends ComponenteEditor<Articulo|P
   }
   private setProveedor(prov: Proveedor, markAsDirty: boolean): void {
     this.form.controls.id_proveedor.setValue(prov.id, {emitEvent: false});
-    this.form.controls.proveedor_nombre.setValue(prov.nombre);
+    this.form.controls.proveedor_nombre.setValue(prov.nombre, {emitEvent: false});
     if (markAsDirty) {
       this.form.markAsDirty();
     }
   }
   private setCategoria(cat: Categoria, markAsDirty: boolean): void {
     this.form.controls.id_categoria.setValue(cat.id, {emitEvent: false});
-    this.form.controls.categoria_nombre.setValue(cat.nombre);
+    this.form.controls.categoria_nombre.setValue(cat.nombre, {emitEvent: false});
     if (markAsDirty) {
       this.form.markAsDirty();
     }
@@ -180,7 +184,6 @@ export class MantenimientoArticulosComponent extends ComponenteEditor<Articulo|P
         this.setArticulo(art);
         this.ds.fetchCategoria(art.id_categoria + '').subscribe(this.setCategoria.bind(this));
         this.ds.fetchProveedor(art.id_proveedor + '').subscribe(this.setProveedor.bind(this));
-        this.cerrarModal();
       });
     });
   }

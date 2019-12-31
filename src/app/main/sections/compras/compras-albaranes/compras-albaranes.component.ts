@@ -6,6 +6,7 @@ import { DataService, AlbaranCompra, Serie, MetodoPago, Proveedor, RegistroAlbar
 import { CompEditable, ComponenteEditor } from '../../mantenimiento/mantenimiento-comp';
 import { sumarPorc, restarPorc, getPorc, fixNoRound } from '../../../../services/calc/calc';
 import { BiMap} from '../../../utilidades/utils/ultis';
+import { ValidatorService } from 'src/app/services/validator/validator.service';
 @Component({
   selector: 'app-compras-albaranes',
   templateUrl: './compras-albaranes.component.html',
@@ -23,15 +24,15 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
     this._series = new BiMap();
     this.registros = new FormArray([]);
     this.form = new FormGroup({
-      serie: new FormControl(''),
-      id: new FormControl(''),
-      fecha: new FormControl(),
-      id_proveedor: new FormControl(),
+      serie: new FormControl(),
+      id: new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id albarán')}),
+      fecha: new FormControl(null, {updateOn: 'change', validators: ValidatorService.isDate.bind(null, 'fecha albarán')}),
+      id_proveedor: new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id proveedor')}),
       nombre_proveedor: new FormControl({value: null, disabled: true}),
-      id_albaran_proveedor: new FormControl(''),
-      id_metodo_pago: new FormControl(''),
+      id_albaran_proveedor: new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'id albarán proveedor')}),
+      id_metodo_pago: new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id metodo pago')}),
       nombre_metodo_pago: new FormControl({value: null, disabled: true}),
-      descuento_general: new FormControl(''),
+      descuento_general: new FormControl('', {updateOn: 'change', validators: ValidatorService.isNumber.bind(null, 'descuento general albarán')}),
       registros: this.registros
     });
     this.calculoTotal = new FormGroup({
@@ -57,7 +58,8 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
       }, (err) => {
         const serie = this.form.controls.serie.value;
         const id = this.form.controls.id.value;
-        this.registros.clear();
+        this.registros = new FormArray([]);
+        this.form.setControl('registros', this.registros);
         this.form.reset('', {emitEvent: false});
         this.form.controls.id.setValue(id, {emitEvent: false});
         this.form.controls.serie.setValue(serie, {emitEvent: false});
@@ -88,6 +90,7 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
   }
   ngOnInit() {
     this.ns.navegacion.next(['Compra', 'Albaranes']);
+    this.form.valueChanges.subscribe(this.updateErrors.bind(this));
   }
   private calcSetTotales (): void {
     const descuento_general = this.form.controls.descuento_general.value;
@@ -106,15 +109,15 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
   private getNuevaFila(): FormGroup {
 
     const regForm = new FormGroup({
-      id_articulo: new FormControl(null, {updateOn: 'blur'}),
-      nombre_registro: new FormControl(null, {updateOn: 'blur'}),
-      iva: new FormControl(null, {updateOn: 'blur'}),
-      cantidad_master: new FormControl(null, {updateOn: 'blur'}),
-      cantidad: new FormControl(null, {updateOn: 'blur'}),
-      precio_coste: new FormControl(null, {updateOn: 'blur'}),
-      descuento: new FormControl(null, {updateOn: 'blur'}),
+      id_articulo: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isUInt.bind(null, 'id articulo')}),
+      nombre_registro: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isString.bind(null, 'nombre articulo')}),
+      iva: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isNumber.bind(null, 'iva articulo')}),
+      cantidad_master: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isUInt.bind(null, 'cantidad master articulo')}),
+      cantidad: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isNumber.bind(null, 'cantidad articulo')}),
+      precio_coste: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isNumber.bind(null, 'precio coste articulo')}),
+      descuento: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isNumber.bind(null, 'descuento articulo')}),
       importe: new FormControl({value: null, disabled: true}, {updateOn: 'change'})
-    }, {updateOn: 'blur'});
+    }, {updateOn: 'blur'}, );
 
     function setImporte (): void {
       const precio = regForm.controls.precio_coste.value;
@@ -167,7 +170,8 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
   }
   private setRegistros(regs: RegistroAlbaranCompra[]): void {
     this.subscripcionRegs.unsubscribe();
-    this.registros.clear();
+    this.registros = new FormArray([]);
+    this.form.setControl('registros', this.registros);
     regs.forEach((reg) => {
       const regForm = this.getNuevaFila();
       regForm.controls.id_articulo.setValue(reg.id_articulo, {emitEvent: false});
@@ -244,12 +248,13 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
     });
   }
   public deshacerCambios(): void {
+    this.registros = new FormArray([]);
+    this.form.setControl('registros', this.registros);
+
     while (this.uneditedFormState.registros.length > this.registros.length) {
       this.registros.push(this.getNuevaFila());
     }
-    while (this.uneditedFormState.registros.length < this.registros.length) {
-      this.registros.removeAt(0);
-    }
+
     super.deshacerCambios();
     this.calcSetTotales();
   }

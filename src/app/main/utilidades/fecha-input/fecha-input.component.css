@@ -39,6 +39,10 @@ form input:focus {
   border: none;
 }
 
+:host.ng-invalid div {
+  border: 3px solid tomato!important;
+}
+
 app-selector-fecha {
   position: absolute;
   z-index: 99999;

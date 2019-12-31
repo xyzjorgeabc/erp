@@ -3,8 +3,7 @@
   (siguienteRegistro)="siguienteRegistro();"
   (anteriorRegistro)="anteriorRegistro();"
   (anadirRegistro)="anadirRegistro();"
-  (eliminarRegistro)="eliminarRegistro();"
-  ></app-nav-bar>
+  (eliminarRegistro)="eliminarRegistro();"></app-nav-bar>
   <div id="form-container" class="container-fluid full-size">
     <form class="row p-5" autocomplete="off" [formGroup]="form">
       <div class="col-12">
@@ -150,6 +149,9 @@
         <button type="button" (click)="deshacerCambios();" [disabled]="form.pristine" class="btn btn-danger">Deshacer</button>
       </div>
     </form>
+    <div class="row px-0 py-0">
+      <app-warning-panel [errors]="errors" class="col"></app-warning-panel>
+    </div>
   </div>
   <ng-container #modal></ng-container>
 </main>

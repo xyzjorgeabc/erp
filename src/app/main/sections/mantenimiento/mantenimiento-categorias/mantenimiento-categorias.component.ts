@@ -3,6 +3,7 @@ import { NavegacionService } from '../../../../services/navegacion/navegacion.se
 import { FormGroup, FormControl } from '@angular/forms';
 import { DataService, Categoria } from '../../../../services/data/data.service';
 import { ComponenteEditor, CompEditable } from '../mantenimiento-comp';
+import { ValidatorService } from 'src/app/services/validator/validator.service';
 @Component({
   selector: 'app-mantenimiento-categorias',
   templateUrl: './mantenimiento-categorias.component.html',
@@ -14,10 +15,10 @@ export class MantenimientoCategoriasComponent extends ComponenteEditor<Categoria
   constructor(private ns: NavegacionService, private ds: DataService, protected CFR: ComponentFactoryResolver) {
     super();
     this.form = new FormGroup({
-      id:              new FormControl(),
-      nombre:          new FormControl(),
-      descripcion:     new FormControl(),
-      iva_por_defecto: new FormControl()
+      id:              new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id categoria')} ),
+      nombre:          new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'nombre categoria')}),
+      descripcion:     new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'descripción categoria')}),
+      iva_por_defecto: new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'iva por defecto')})
     });
   }
 
@@ -42,6 +43,7 @@ export class MantenimientoCategoriasComponent extends ComponenteEditor<Categoria
        });
     });
     this.form.controls.id.setValue('1');
+    this.form.valueChanges.subscribe(this.updateErrors.bind(this));
   }
   private setRegistro(cat: Categoria): void {
     this.form.reset('', {emitEvent: false});

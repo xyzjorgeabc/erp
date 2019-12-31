@@ -13,8 +13,7 @@ import { zip } from 'rxjs';
   styleUrls: ['./ventas-facturas.component.css', '../../seccion.css']
 })
 export class VentasFacturasComponent extends ComponenteEditor<FacturaVenta | Cliente | MetodoPago> implements OnInit, CompEditable {
-
-  @ViewChild('modal', { read: ViewContainerRef, static: true })
+  @ViewChild('modalAlbaranes', { read: ViewContainerRef, static: true })
   private modalAlbaranesContainer: ViewContainerRef;
   private modalAlbaranes: ComponentRef<ModalSeleccionAlbaranesVentaComponent>;
   protected uneditedFormState: FacturaVenta;
@@ -47,39 +46,44 @@ export class VentasFacturasComponent extends ComponenteEditor<FacturaVenta | Cli
     });
 
     this.form.controls.id.valueChanges.subscribe((val) => {
-      this.ds.fetchFacturaVenta(this._series.getKey(this.form.controls.serie.value) + '', val).subscribe( (fact: FacturaVenta) => {
+      this.ds.fetchFacturaVenta(this._series.getKey(this.form.controls.serie.value) + '', val)
+      .subscribe( (fact: FacturaVenta) => {
         const cliObs = this.ds.fetchCliente(fact.id_cliente + '');
         const metObs = this.ds.fetchMetodoPago(fact.id_metodo_pago + '');
         zip(cliObs, metObs).subscribe((result: [Cliente, MetodoPago]) => {
-        this.setFacturaVenta(fact);
-        this.setCliente(result[0] as Cliente, false);
-        this.setMetodoPago(result[1] as MetodoPago, false);
-        this.setAlbaranes(fact.albaranes);
+          this.setFacturaVenta(fact);
+          this.setCliente(result[0] as Cliente, false);
+          this.setMetodoPago(result[1] as MetodoPago, false);
+          this.uneditedFormState = this.form.getRawValue();
+          this.form.markAsPristine();
         });
+      }, (err) => {
+        const serie = this.form.controls.serie.value;
+        const id = this.form.controls.id.value;
+        this.albaranes.clear();
+        this.form.reset('', {emitEvent: false});
+        this.form.controls.id.setValue(id, {emitEvent: false});
+        this.form.controls.serie.setValue(serie, {emitEvent: false});
       });
     });
-
+    this.form.controls.serie.valueChanges.subscribe(() => {
+      this.form.controls.id.setValue('1');
+    });
+    this.form.controls.id_metodo_pago.valueChanges.subscribe(() => {
+      this.ds.fetchMetodoPago(this.form.controls.id_metodo_pago.value)
+      .subscribe((metodo: MetodoPago) => {
+        this.setMetodoPago(metodo, true);
+      });
+    });
+    this.form.controls.id_cliente.valueChanges.subscribe(() => {
+      this.ds.fetchCliente(this.form.controls.id_cliente.value)
+      .subscribe((cliente: Cliente) => {
+        this.setCliente(cliente, true);
+      });
+    });
   }
   ngOnInit() {
     this.ns.navegacion.next(['Venta', 'Facturas']);
-  }
-  public abrirModal(): void {
-    if (!this.modalAlbaranes) {
-      const comp = this.CFR.resolveComponentFactory(ModalSeleccionAlbaranesVentaComponent);
-      const CRI = this.modalAlbaranesContainer.createComponent(comp, 0);
-      CRI.instance.eventoCerrar.subscribe(() => { this.cerrarModal(); });
-      CRI.instance.eventoSeleccionAlbaranes.subscribe((albs: AlbaranVenta[]) => {
-        const albsObs = [];
-        for (let i = 0; i < albs.length; i++) {
-          albsObs.push(this.ds.fetchAlbaranVenta(albs[i].id_serie, albs[i].id));
-        }
-        // tslint:disable-next-line: deprecation
-        zip.apply(null, albsObs).subscribe((result: AlbaranVenta[]) => {
-          this.setAlbaranes(result);
-        });
-      });
-      this.modalAlbaranes = CRI;
-    }
   }
   private setAlbaranes(albs: AlbaranVenta[]): void {
     const filtered_albs = albs.filter((alb: AlbaranVenta) => {
@@ -87,6 +91,7 @@ export class VentasFacturasComponent extends ComponenteEditor<FacturaVenta | Cli
       return (el.id === alb.id) && (el.id_serie === alb.id_serie);
      });
     });
+    this.albaranes.clear();
     for (let i = 0; i < filtered_albs.length; i++) {
       this.albaranes.push(new FormGroup({
         id_serie: new FormControl({value: filtered_albs[i].id_serie, disabled: true}),
@@ -125,19 +130,79 @@ export class VentasFacturasComponent extends ComponenteEditor<FacturaVenta | Cli
       this.form.markAsDirty();
     }
   }
+  public abrirModalAlbaranes(): void {
+    if (!this.modalAlbaranes) {
+      const comp = this.CFR.resolveComponentFactory(ModalSeleccionAlbaranesVentaComponent);
+      const CRI = this.modalAlbaranesContainer.createComponent(comp, 0);
+      CRI.instance.eventoCerrar.subscribe(() => { this.cerrarModalAlbaranes(); });
+      CRI.instance.eventoSeleccionAlbaranes.subscribe((albs: AlbaranVenta[]) => {
+        const albsObs = [];
+        for (let i = 0; i < albs.length; i++) {
+          albsObs.push(this.ds.fetchAlbaranVenta(albs[i].id_serie, albs[i].id));
+        }
+        // tslint:disable-next-line: deprecation
+        zip.apply(null, albsObs).subscribe((result: AlbaranVenta[]) => {
+          this.setAlbaranes(result);
+        });
+      });
+      this.modalAlbaranes = CRI;
+    }
+  }
+  public abrirModalFactura(): void {
+    this.ds.fetchFacturaVenta(this._series.getKey(this.form.controls.serie.value), 'all')
+    .subscribe(( facts: FacturaVenta[]) => {
+      this.abrirModal(facts, (fact_tmp: FacturaVenta) => {
+        this.ds.fetchFacturaVenta(fact_tmp.id_serie, fact_tmp.id).subscribe((fact: FacturaVenta) => {
+          const metObs = this.ds.fetchMetodoPago(fact.id_metodo_pago + '');
+          const cliObs = this.ds.fetchCliente(fact.id_cliente + '');
+          zip(cliObs, metObs).subscribe((result: [Cliente, MetodoPago]) => {
+            this.setFacturaVenta(fact);
+            this.setAlbaranes(fact.albaranes);
+            this.setCliente(result[0], false);
+            this.setMetodoPago(result[1], false);
+          });
+        });
+      });
+    });
+  }
+  public abrirModalCliente(): void {
+    this.ds.fetchCliente('all').subscribe(( clientes: Cliente[]) => {
+      this.abrirModal(clientes, (cliente: Cliente) => {
+        this.setCliente(cliente, true);
+      });
+    });
+  }
+  public abrirModalMetodoPago(): void {
+    this.ds.fetchMetodoPago('all').subscribe((metodos: MetodoPago[]) => {
+      this.abrirModal(metodos, (metodo: MetodoPago) => {
+        this.setMetodoPago(metodo, true);
+      });
+    });
+  }
   public eliminarAlbaran(i: number): void {
     this.albaranes.removeAt(i);
   }
-  public cerrarModal() {
+  public cerrarModalAlbaranes() {
     this.modalAlbaranes.destroy();
     this.modalAlbaranes = null;
   }
   public deshacerCambios() {
-
+    while (this.uneditedFormState.albaranes.length > this.albaranes.length) {
+      this.albaranes.push(this.getNuevaFila());
+    }
+    while (this.uneditedFormState.albaranes.length < this.albaranes.length) {
+      this.albaranes.removeAt(0);
+    }
+    super.deshacerCambios();
   }
   public anadirRegistro() {
-    this.albaranes.push(this.getNuevaFila());
-    this.form.markAsDirty();
+    this.ds.fetchFacturaVenta(this._series.getKey(this.form.controls.serie.value), 'last')
+    .subscribe((fact: FacturaVenta) => {
+      this.albaranes.clear();
+      this.form.reset('', {emitEvent: false});
+      this.form.controls.serie.setValue(this._series.getValue(fact.id_serie), {emitEvent: false});
+      this.form.controls.id.setValue(fact.id + 1 + '', {emitEvent: false});
+    });
   }
   public eliminarRegistro() {
 
@@ -146,8 +211,9 @@ export class VentasFacturasComponent extends ComponenteEditor<FacturaVenta | Cli
     const factura = this.form.value;
     factura.id_serie = this._series.getKey(factura.serie);
     factura.albaranes = this.albaranes.value;
-    this.ds.editarFacturaCompra(factura).subscribe(() => {
-      // mark as pristine set unedited form.
+    this.ds.editarFacturaVenta(factura).subscribe(() => {
+      this.uneditedFormState = this.form.getRawValue();
+      this.form.markAsPristine();
     });
   }
 }

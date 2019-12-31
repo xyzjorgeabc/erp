@@ -1,17 +1,18 @@
 import { ModalMuestraSeleccionComponent } from '../../utilidades/modal-muestra-seleccion/modal-muestra-seleccion.component';
 import { ViewChild, ViewContainerRef, ComponentRef, ComponentFactoryResolver } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ValidationErrors, FormArray, FormControl } from '@angular/forms';
 
 export abstract class ComponenteEditor <T extends object> {
 
   @ViewChild('modal', { read: ViewContainerRef, static: true })
   private modalContainer: ViewContainerRef;
   private modal: ComponentRef<ModalMuestraSeleccionComponent>;
+  protected errors: Set<ValidationErrors>;
   protected abstract CFR: ComponentFactoryResolver;
   protected abstract form: FormGroup;
   protected abstract uneditedFormState: T;
   constructor() {
-
+    this.errors = new Set();
   }
   protected abrirModal(data: Array<T>, onSelect: Function): void {
     if (this.modal) { return void 0; }
@@ -30,6 +31,35 @@ export abstract class ComponenteEditor <T extends object> {
     this.modal.destroy();
     this.modal = null;
   }
+  protected updateErrors(): void {
+    const tmp = new Set();
+    // tslint:disable-next-line: forin
+    for (const control in this.form.controls) {
+      const formControl: FormControl | FormArray = this.form.controls[control] as FormControl | FormArray;
+      if (formControl.pristine) {
+        continue;
+      }
+      if ( formControl instanceof FormArray) {
+        for (let i = 0; i < formControl.length ; i++) {
+          // tslint:disable-next-line: forin
+          for (const controlName in (formControl.controls[i] as FormGroup).controls) {
+            console.log(formControl.controls[i]);
+            const error = (formControl.controls[i] as FormGroup) .controls[controlName].errors;
+            if (error) {
+              tmp.add(error);
+            }
+          }
+        }
+      } else {
+        const error = this.form.controls[control].errors;
+        if (error) {
+          tmp.add(error);
+        }
+      }
+    }
+    console.log('\n \n \n \n \n \n \n \n \n \n \n \n \n \n ');
+    this.errors = tmp;
+  }
   public siguienteRegistro(): void {
     this.form.controls.id.setValue((+this.form.value.id + 1) + '');
   }
@@ -45,6 +75,7 @@ export abstract class ComponenteEditor <T extends object> {
     } else {
       this.form.controls.id.setValue(tempid, {emitEvent: false});
     }
+    this.updateErrors();
   }
   public abstract anadirRegistro(): void;
   public abstract eliminarRegistro(): void;

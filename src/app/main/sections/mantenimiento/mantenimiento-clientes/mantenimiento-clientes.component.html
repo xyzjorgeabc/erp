@@ -17,42 +17,42 @@
                       <i class="fas fa-search"></i>
                     </button>
                   </div>
-                  <app-fake-input id="id" [type]="'unsigInt'" [int]="5" formControlName="id" class="form-control mb-3"></app-fake-input>
+                  <input id="id" type="text" formControlName="id" class="form-control mb-3">
                 </div>
               </div>
               <div class="col-lg">
                 <label for="nombre-comercial">Nombre comercial</label>
-                <app-fake-input id="nombre-comercial" [type]="'text'" [len]="50" formControlName="nombre_comercial" class="form-control mb-3"></app-fake-input>
+                <input id="nombre-comercial" type="text" formControlName="nombre_comercial" class="form-control mb-3">
               </div>
           </div>
           <div class="form-row">
               <div class="col-12">
                 <label for="CIF">CIF</label>
-                <app-fake-input id="cif" [type]="'text'" [len]="10" formControlName="cif" class="form-control mb-3"></app-fake-input>
+                <input id="cif" type="text" formControlName="cif" class="form-control mb-3">
               </div>
           </div>
           <div class="form-row">
             <div class="col-12">
               <label for="persona-contacto">Persona de contacto</label>
-              <app-fake-input id="persona-contacto" [type]="'text'" [len]="50" formControlName="persona_contacto" class="form-control mb-3"></app-fake-input>
+              <input id="persona-contacto" type="text" formControlName="persona_contacto" class="form-control mb-3">
             </div>
           </div>
           <div class="form-row">
             <div class="col-12">
               <label for="direccion">Dirección</label>
-              <app-fake-input id="direccion" [type]="'text'" [len]="50" formControlName="direccion" class="form-control mb-3"></app-fake-input>
+              <input id="direccion" type="text" formControlName="direccion" class="form-control mb-3">
             </div>
           </div>
           <div class="form-row">
             <div class="col-sm-6 col-lg-8 col-xl-6">
               <label for="telefono">Teléfono</label>
-              <app-fake-input id="telefono" [type]="'text'" [len]="15" formControlName="telefono" class="form-control mb-3"></app-fake-input>
+              <input id="telefono" type="text" formControlName="telefono" class="form-control mb-3">
             </div>
           </div>
           <div class="form-row">
             <div class="col-sm-6 col-lg-8 col-xl-6">
               <label for="fax">Fax</label>
-              <app-fake-input id="fax" [type]="'text'" [len]="15" formControlName="fax" class="form-control mb-3"></app-fake-input>
+              <input id="fax" type="text" formControlName="fax" class="form-control mb-3">
             </div>
           </div>
           <div class="form-row">
@@ -72,7 +72,7 @@
                 <div class="form-row">
                   <div class="col-12">
                     <label for="descuento">Descuento</label>
-                    <app-fake-input id="descuento" [type]="'unsigFloat'" [int]="3" [dec]="2" formControlName="descuento" class="form-control mb-3"></app-fake-input>
+                    <input id="descuento" type="text" formControlName="descuento" class="form-control mb-3">
                   </div>
                 </div>
               </div>
@@ -88,27 +88,27 @@
                     <i class="fas fa-search"></i>
                   </button>
                 </div>
-                <app-fake-input id="id-metodo-pago" [type]="'unsigInt'" [int]="5" formControlName="id_metodo_pago" class="form-control col-8 col-sm-3 mb-3"></app-fake-input>
-                <app-fake-input id="nombre-metodo-pago" [type]="'text'" [len]="50" formControlName="nombre_metodo_pago" class="form-control col mb-3"></app-fake-input>
+                <input id="id-metodo-pago" type="text" formControlName="id_metodo_pago" class="form-control col-8 col-sm-3 mb-3">
+                <input id="nombre-metodo-pago" type="text" formControlName="nombre_metodo_pago" class="form-control col mb-3">
               </div>
             </div>
           </div>
           <div class="form-row">
             <div class="col-12">
               <label for="cuenta-bancaria">Cuenta bancaria</label>
-              <app-fake-input id="cuenta-bancaria" [type]="'text'" [int]="30" formControlName="cuenta_bancaria" class="form-control mb-3"></app-fake-input>
+              <input id="cuenta-bancaria" type="text" formControlName="cuenta_bancaria" class="form-control mb-3">
             </div>
           </div>
           <div class="form-row">
             <div class="col-12">
               <label for="sitio-web">Sitio web</label>
-              <app-fake-input id="sitio-web" [type]="'text'" [len]="30" formControlName="sitio_web" class="form-control mb-3"></app-fake-input>
+              <input id="sitio-web" type="text" formControlName="sitio_web" class="form-control mb-3">
             </div>
           </div>
           <div class="form-row">
             <div class="col-12">
               <label for="e-mail">E-mail</label>
-              <app-fake-input id="email" [type]="'text'" [len]="30" formControlName="email" class="form-control mb-3"></app-fake-input>
+              <input id="email" type="text" formControlName="email" class="form-control mb-3">
             </div>
           </div>
           <div class="form-row">
@@ -133,6 +133,9 @@
           <button type="button" (click)="deshacerCambios();"class="btn btn-danger" [disabled]="form.pristine">Deshacer</button>
         </div>
       </form>
+      <div class="row px-0 py-0">
+        <app-warning-panel [errors]="errors" class="col"></app-warning-panel>
+      </div>
     </div>
     <ng-container #modal></ng-container>
   </main>

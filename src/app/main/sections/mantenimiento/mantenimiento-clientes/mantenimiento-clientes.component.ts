@@ -3,6 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { NavegacionService } from '../../../../services/navegacion/navegacion.service';
 import { DataService, Cliente, MetodoPago } from '../../../../services/data/data.service';
 import { ComponenteEditor, CompEditable } from '../mantenimiento-comp';
+import { ValidatorService } from 'src/app/services/validator/validator.service';
 @Component({
   selector: 'app-mantenimiento-clientes',
   templateUrl: './mantenimiento-clientes.component.html',
@@ -14,24 +15,24 @@ export class MantenimientoClientesComponent extends ComponenteEditor<Cliente | M
   constructor(private ns: NavegacionService, private ds: DataService, protected CFR: ComponentFactoryResolver) {
     super();
     this.form = new FormGroup({
-      id:                    new FormControl('', {updateOn: 'change'}),
-      nombre_comercial:      new FormControl(),
-      cif:                   new FormControl(),
-      persona_contacto:      new FormControl(),
-      direccion:             new FormControl(),
-      telefono:              new FormControl(),
-      fax:                   new FormControl(),
+      id:                    new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id cliente')}),
+      nombre_comercial:      new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'nombre comercial cliente')}),
+      cif:                   new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'cif cliente')}),
+      persona_contacto:      new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'persona contacto cliente')}),
+      direccion:             new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'dirección cliente')}),
+      telefono:              new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'telefono cliente')}),
+      fax:                   new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'fax cliente')}),
       precio_albaran:        new FormControl(),
       factura_automatica:    new FormControl(),
       fecha_captacion:       new FormControl(),
       fecha_nacimiento:      new FormControl(),
-      id_metodo_pago:        new FormControl('', {updateOn: 'change'}),
+      id_metodo_pago:        new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id metodo pago')}),
       nombre_metodo_pago:    new FormControl({value: null, disabled: true}),
-      cuenta_bancaria:       new FormControl(),
-      sitio_web:             new FormControl(),
-      email:                 new FormControl(),
-      descuento:             new FormControl(),
-      informacion_adicional: new FormControl()
+      cuenta_bancaria:       new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'cuentea bancaria cliente')}),
+      sitio_web:             new FormControl('', {updateOn: 'change', validators: ValidatorService.isURL.bind(null, 'sitio web cliente')}),
+      email:                 new FormControl('', {updateOn: 'change', validators: ValidatorService.isEmail.bind(null, 'email cliente')}),
+      descuento:             new FormControl('', {updateOn: 'change', validators: ValidatorService.isNumber.bind(null, 'descuento de cliente')}),
+      informacion_adicional: new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'info adicional cliente')})
     });
   }
   ngOnInit() {
@@ -69,6 +70,7 @@ export class MantenimientoClientesComponent extends ComponenteEditor<Cliente | M
       });
     });
     this.form.controls.id.setValue('1');
+    this.form.valueChanges.subscribe(this.updateErrors.bind(this));
   }
   private setRegistro(cliente: Cliente): void {
       this.form.reset('', {emitEvent: false});

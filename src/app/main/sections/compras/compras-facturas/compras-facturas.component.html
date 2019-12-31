@@ -114,11 +114,11 @@
             </ng-container>
           </tbody>
         </table>
-        <button (click)="abrirModalAlbaranes()" class="btn btn-primary">Añadir</button>
+        <button (click)="abrirModalAlbaranes();" class="btn btn-primary">Añadir</button>
       </div>
       <div class="col-12 d-flex justify-content-center mt-5">
         <button type="button" class="btn btn-success mr-5" (click)="guardarRegistro();">Guardar</button>
-        <button type="button" [disabled]="form.pristine" class="btn btn-danger" (click)="deshacerCambios();">Reset</button>
+        <button type="button" [disabled]="form.pristine" class="btn btn-danger" (click)="deshacerCambios();">Deshacer</button>
       </div>
     </form>
   </div>

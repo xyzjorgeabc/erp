@@ -29,7 +29,6 @@ table input:disabled {
 }
 table input {
   background-color: transparent!important;
-  max-height: 1.5rem;
 }
 
 table .butn-col {
@@ -102,4 +101,18 @@ table .rs-x {
 table .butn-cnt {
   width: 40px;
   min-width: 40px;
+}
+
+input.ng-invalid.ng-touched {
+  border: 3px solid tomato!important;
+}
+
+.table-sm td {
+  vertical-align: middle;
+  padding: 0!important;
+  height: 2rem!important;
+}
+
+.table-sm input {
+  height: 2rem!important;
 }

@@ -1,5 +1,5 @@
 <main> 
-  <app-nav-bar [titulo]="'Edición de articulos'" 
+  <app-nav-bar [titulo]="'Edición de articulos'"
   (siguienteRegistro)="siguienteRegistro();"
   (anteriorRegistro)="anteriorRegistro();"
   (anadirRegistro)="anadirRegistro();"
@@ -17,18 +17,18 @@
                   <i class="fas fa-search"></i>
                 </button>
               </div>
-              <app-fake-input id="id" tabindex="1" [type]="'unsigInt'" [int]="5" formControlName="id" class="form-control mb-3" ></app-fake-input>
+              <input id="id" tabindex="1" type="text" formControlName="id" class="form-control mb-3">
             </div>
           </div>
           <div class="col-lg">
             <label for="nombre-articulo">Nombre</label>
-            <app-fake-input id="nombre-articulo" tabindex="1" [type]="'text'" [len]="50" formControlName="nombre" class="form-control mb-3" ></app-fake-input>
+            <input id="nombre-articulo" tabindex="1" type="text" formControlName="nombre" class="form-control mb-3">
           </div>
         </div>
         <div class="form-row">
           <div class="col-12">
             <label for="descripcion-articulo">Descripción</label>
-            <app-fake-input id="descripcion-articulo" tabindex="1" [type]="'text'" [int]="100" formControlName="descripcion" class="form-control mb-3" ></app-fake-input>
+            <input id="descripcion-articulo" tabindex="1" formControlName="descripcion" class="form-control mb-3">
           </div>
         </div>
         <div class="form-row">
@@ -40,8 +40,8 @@
                   <i class="fas fa-search"></i>
                 </button>
               </div>
-              <app-fake-input id="id-categoria" tabindex="1" [type]="'unsigInt'" [int]="5" formControlName="id_categoria" class="form-control  col-8 col-sm-3 mb-3"></app-fake-input>
-              <app-fake-input id="categoria_nombre" [type]="'text'" [len]="50" formControlName="categoria_nombre" class="form-control col mb-3" ></app-fake-input>
+              <input id="id-categoria" tabindex="1" type="text" formControlName="id_categoria" class="form-control col-8 col-sm-3 mb-3">
+              <input id="categoria_nombre" type="text" formControlName="categoria_nombre" class="form-control col mb-3">
             </div>
           </div>
         </div>
@@ -54,19 +54,19 @@
                   <i class="fas fa-search"></i>
                 </button>
               </div>
-              <app-fake-input id="id-proveedor" tabindex="1" [type]="'unsigInt'" [int]="5" formControlName="id_proveedor" class="form-control col-8 col-sm-3 mb-3" ></app-fake-input>
-              <app-fake-input id="nombre-proveedor" [type]="'text'" [int]="50" formControlName="proveedor_nombre" class="form-control col mb-3" ></app-fake-input>
+              <input id="id-proveedor" tabindex="1" type="text" formControlName="id_proveedor" class="form-control col-8 col-sm-3 mb-3">
+              <input id="nombre-proveedor" type="text" formControlName="proveedor_nombre" class="form-control col mb-3">
             </div>
           </div>
         </div>
         <div class="form-row">
           <div class="col-sm-6 col-lg-4">
             <label for="master">Unidad master</label>
-            <app-fake-input id="master" tabindex="1" [type]="'unsigFloat'" [int]="5" [dec]="3" formControlName="cantidad_master" class="form-control mb-3"></app-fake-input>
+            <input id="master" tabindex="1" type="text" formControlName="cantidad_master" class="form-control mb-3">
           </div>
           <div class="col-sm-6 col-lg-4">
             <label for="stock">Stock</label>
-            <app-fake-input id="stock" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="stock" class="form-control mb-3"></app-fake-input>
+            <input id="stock" type="text" formControlName="stock" class="form-control mb-3">
           </div>
         </div>
       </div>
@@ -74,43 +74,43 @@
         <div class="form-row">
           <div class="col-sm-6 col-lg-4">
             <label for="iva">Tipo de IVA %</label>
-            <app-fake-input id="iva" tabindex="1" [type]="'unsigFloat'" [int]="3" [dec]="2" formControlName="iva" class="form-control mb-3" ></app-fake-input>
+            <input id="iva" tabindex="1" type="text" formControlName="iva" class="form-control mb-3">
           </div>
         </div>
         <div class="form-row">
           <div class="col-sm-6 col-lg-4">
             <label for="precio-coste-anterior">Precio coste anterior</label>
-            <app-fake-input id="precio-coste-anterior" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="coste_anterior" class="form-control mb-3" ></app-fake-input>
+            <input id="precio-coste-anterior" type="text" formControlName="coste_anterior" class="form-control mb-3" >
           </div>
         </div>
         <div class="form-row">
           <div class="col-sm-6 col-lg-4">
             <label for="precio-coste">Precio coste</label>
-            <app-fake-input id="precio-coste" tabindex="1" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="coste" class="form-control mb-3" ></app-fake-input>
+            <input id="precio-coste" tabindex="1" type="text" formControlName="coste" class="form-control mb-3" >
           </div>
           <div class="col-sm-6 col-lg-4">
             <label for="precio-coste-mas-iva">Precio coste + IVA</label>
-            <app-fake-input id="precio-coste-mas-iva" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="coste_mas_iva" class="form-control mb-3" ></app-fake-input>
+            <input id="precio-coste-mas-iva" type="text" formControlName="coste_mas_iva" class="form-control mb-3" >
           </div>
         </div>
         <div class="form-row">
           <div class="col-sm-6 col-lg-4">
             <label for="pvp-detalle">PVP detalle</label>
-            <app-fake-input id="pvp-detalle" tabindex="1" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="pvp_detalle" class="form-control mb-3" ></app-fake-input>
+            <input id="pvp-detalle" tabindex="1" type="text" formControlName="pvp_detalle" class="form-control mb-3" >
           </div>
           <div class="col-sm-6 col-lg-4">
             <label for="margen-detalle">Margen detalle</label>
-            <app-fake-input id="margen-detalle" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="margen_detalle" class="form-control mb-3" ></app-fake-input>
+            <input id="margen-detalle" type="text" formControlName="margen_detalle" class="form-control mb-3" >
           </div>
         </div>
         <div class="form-row">
           <div class="col-sm-6 col-lg-4">
             <label for="pvp-mayor">PVP mayor</label>
-            <app-fake-input id="pvp-mayor" tabindex="1" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="pvp_mayor" class="form-control mb-3" ></app-fake-input>
+            <input id="pvp-mayor" tabindex="1" type="text" formControlName="pvp_mayor" class="form-control mb-3" >
           </div>
           <div class="col-sm-6 col-lg-4">
             <label for="margen-mayor">Margen mayor</label>
-            <app-fake-input id="margen-mayor" [type]="'sigFloat'" [int]="5" [dec]="3" formControlName="margen_mayor" class="form-control mb-3" ></app-fake-input>
+            <input id="margen-mayor" type="text" formControlName="margen_mayor" class="form-control mb-3" >
           </div>
         </div>
       </div>
@@ -119,6 +119,9 @@
         <button type="button" (click)="deshacerCambios();" class="btn btn-danger" [disabled]="form.pristine">Deshacer</button>
       </div>
     </form>
+    <div class="row px-0 py-0">
+      <app-warning-panel [errors]="errors" class="col"></app-warning-panel>
+    </div>
   </div>
   <ng-container #modal></ng-container>
 </main>

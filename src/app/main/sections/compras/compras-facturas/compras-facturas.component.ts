@@ -54,7 +54,6 @@ export class ComprasFacturasComponent extends ComponenteEditor<FacturaCompra | P
           this.setFacturaCompra(fact);
           this.setProveedor(result[0], false);
           this.setMetodoPago(result[1], false);
-          this.setAlbaranes(fact.albaranes);
           this.uneditedFormState = this.form.getRawValue();
           this.form.markAsPristine();
         });
@@ -91,6 +90,7 @@ export class ComprasFacturasComponent extends ComponenteEditor<FacturaCompra | P
     this.form.controls.id_factura_proveedor.setValue(fact.id_factura_proveedor, {emitEvent: false});
     this.form.controls.descuento_general.setValue(fact.descuento_general, {emitEvent: false});
     this.form.controls.fecha.setValue(fact.fecha, {emitEvent: false});
+    this.setAlbaranes(fact.albaranes);
   }
   private setAlbaranes(albs: AlbaranCompra[]): void {
     const filtered_albs = albs.filter((alb: AlbaranCompra) => {
@@ -98,6 +98,7 @@ export class ComprasFacturasComponent extends ComponenteEditor<FacturaCompra | P
       return (el.id === alb.id) && (el.id_serie === alb.id_serie);
      });
     });
+    this.albaranes.clear();
     for (let i = 0; i < filtered_albs.length; i++) {
       this.albaranes.push(new FormGroup({
         id_serie: new FormControl({value: filtered_albs[i].id_serie, disabled: true}),

@@ -1,0 +1,9 @@
+:host {
+  height: 25px;
+  width: 100%;
+  overflow: hidden;
+}
+
+:host(.active-errors) {
+  background-color: #dc3545;
+}

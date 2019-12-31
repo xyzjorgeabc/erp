@@ -3,6 +3,7 @@ import { NavegacionService } from '../../../../services/navegacion/navegacion.se
 import { FormControl, FormGroup } from '@angular/forms';
 import { DataService, Proveedor, MetodoPago } from 'src/app/services/data/data.service';
 import { CompEditable, ComponenteEditor } from '../mantenimiento-comp';
+import { ValidatorService } from 'src/app/services/validator/validator.service';
 @Component({
   selector: 'app-mantenimiento-proveedor',
   templateUrl: './mantenimiento-proveedor.component.html',
@@ -14,19 +15,19 @@ export class MantenimientoProveedorComponent extends ComponenteEditor<Proveedor 
   constructor(private ns: NavegacionService, private ds: DataService, protected CFR: ComponentFactoryResolver) {
     super();
     this.form = new FormGroup({
-      id:                    new FormControl('', {updateOn: 'change'}),
-      nombre:                new FormControl(),
-      cif:                   new FormControl(),
-      persona_contacto:      new FormControl(),
-      direccion:             new FormControl(),
-      telefono:              new FormControl(),
-      fax:                   new FormControl(),
-      id_metodo_pago:        new FormControl('', {updateOn: 'change'}),
+      id:                    new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id proveedor')}),
+      nombre:                new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'nombre proveedor')}),
+      cif:                   new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'cif proveedor')}),
+      persona_contacto:      new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'persona contacto proveedor')}),
+      direccion:             new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'dirección proveedor')}),
+      telefono:              new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'telefono proveedor')}),
+      fax:                   new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'fax proveedor')}),
+      id_metodo_pago:        new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id metodo pago')}),
       nombre_metodo_pago:    new FormControl({value: null, disabled: true}),
-      cuenta_bancaria:       new FormControl(),
-      sitio_web:             new FormControl(),
-      email:                 new FormControl(),
-      informacion_adicional: new FormControl(),
+      cuenta_bancaria:       new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'cuenta bancaria proveedor')}),
+      sitio_web:             new FormControl('', {updateOn: 'change', validators: ValidatorService.isURL.bind(null, 'sitio web proveedor')}),
+      email:                 new FormControl('', {updateOn: 'change', validators: ValidatorService.isEmail.bind(null, 'email proveedor')}),
+      informacion_adicional: new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'info adicional proveedor')}),
     });
   }
   ngOnInit() {
@@ -64,6 +65,7 @@ export class MantenimientoProveedorComponent extends ComponenteEditor<Proveedor 
       });
     });
     this.form.controls.id.setValue('1');
+    this.form.valueChanges.subscribe(this.updateErrors.bind(this));
   }
   private setRegistro(prov: Proveedor): void {
     this.form.reset('', {emitEvent: false});
