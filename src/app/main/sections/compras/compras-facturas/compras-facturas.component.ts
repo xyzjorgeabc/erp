@@ -6,6 +6,7 @@ import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { DataService, Serie, MetodoPago, FacturaCompra, Proveedor, AlbaranCompra } from 'src/app/services/data/data.service';
 import { BiMap } from 'src/app/main/utilidades/utils/ultis';
 import { CompEditable, ComponenteEditor } from '../../mantenimiento/mantenimiento-comp';
+import { ValidatorService } from 'src/app/services/validator/validator.service';
 
 @Component({
   selector: 'app-compras-facturas',
@@ -28,14 +29,14 @@ export class ComprasFacturasComponent extends ComponenteEditor<FacturaCompra | P
     this.albaranes = new FormArray([]);
     this.form = new FormGroup({
       serie: new FormControl(),
-      id: new FormControl(),
-      id_proveedor: new FormControl(),
+      id: new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id factura')}),
+      id_proveedor: new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id proveedor')}),
       nombre_proveedor: new FormControl({value: null, disabled: true}),
-      id_factura_proveedor: new FormControl(),
-      id_metodo_pago: new FormControl(),
+      id_factura_proveedor: new FormControl('', {updateOn: 'change', validators: ValidatorService.isString.bind(null, 'id factura proveedor')}),
+      id_metodo_pago: new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id metodo pago')}),
       nombre_metodo_pago: new FormControl({value: null, disabled: true}),
-      descuento_general: new FormControl(),
-      fecha: new FormControl(),
+      descuento_general: new FormControl('', {updateOn: 'change', validators: ValidatorService.isNumber.bind(null, 'descuento general factura')}),
+      fecha: new FormControl(null, {updateOn: 'change', validators: ValidatorService.isDate.bind(null, 'fecha factura')}),
       albaranes: this.albaranes
     });
     this.ds.fetchSerie('all').subscribe((series: Serie[]) => {
@@ -60,7 +61,9 @@ export class ComprasFacturasComponent extends ComponenteEditor<FacturaCompra | P
       }, (err) => {
         const serie = this.form.controls.serie.value;
         const id = this.form.controls.id.value;
-        this.albaranes.clear();
+        this.albaranes = new FormArray([]);
+        this.form.setControl('albaranes', this.albaranes);
+        this.form.reset('', {emitEvent: false});
         this.form.reset('', {emitEvent: false});
         this.form.controls.id.setValue(id, {emitEvent: false});
         this.form.controls.serie.setValue(serie, {emitEvent: false});
@@ -85,6 +88,7 @@ export class ComprasFacturasComponent extends ComponenteEditor<FacturaCompra | P
   }
   ngOnInit() {
     this.ns.navegacion.next(['Compra', 'Facturas']);
+    this.form.valueChanges.subscribe(this.updateErrors.bind(this));
   }
   private setFacturaCompra(fact: FacturaCompra): void {
     this.form.controls.id_factura_proveedor.setValue(fact.id_factura_proveedor, {emitEvent: false});
@@ -98,7 +102,9 @@ export class ComprasFacturasComponent extends ComponenteEditor<FacturaCompra | P
       return (el.id === alb.id) && (el.id_serie === alb.id_serie);
      });
     });
-    this.albaranes.clear();
+    this.albaranes = new FormArray([]);
+    this.form.setControl('albaranes', this.albaranes);
+
     for (let i = 0; i < filtered_albs.length; i++) {
       this.albaranes.push(new FormGroup({
         id_serie: new FormControl({value: filtered_albs[i].id_serie, disabled: true}),
@@ -196,11 +202,11 @@ export class ComprasFacturasComponent extends ComponenteEditor<FacturaCompra | P
     this.modalAlbaranes = null;
   }
   public deshacerCambios() {
+    this.albaranes = new FormArray([]);
+    this.form.setControl('albaranes', this.albaranes);
+
     while (this.uneditedFormState.albaranes.length > this.albaranes.length) {
       this.albaranes.push(this.getNuevaFila());
-    }
-    while (this.uneditedFormState.albaranes.length < this.albaranes.length) {
-      this.albaranes.removeAt(0);
     }
     super.deshacerCambios();
   }

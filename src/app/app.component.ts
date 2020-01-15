@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BreadcrumbComponent } from './main/breadcrumb/breadcrumb.component';
 import { MenuComponent } from './main/menu/menu.component';
 import { Router } from '@angular/router';
-import { LoginService, RespuestaLoginStatusRequest } from './services/login/login.service';
+import { LoginService, User } from './services/login/login.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -17,18 +17,19 @@ export class AppComponent implements OnInit {
   }
   ngOnInit() {
     const token = localStorage.getItem('token');
-    this.router.navigate(['/main']);
-    return;
     if (token) {
       this.loginService.token_handshake(token)
-      .subscribe((resp: RespuestaLoginStatusRequest) => {
-        if (resp.token_valido) {
-          this.router.navigate(['/main']);
-        } else {
+      .subscribe((resp: User) => {
+        localStorage.setItem('user', JSON.stringify(resp));
+        this.router.navigate(['/main']);
+      }, (err: HttpErrorResponse) => {
+        if (err.status === 500) {
+          alert('error al connectar con el backend \n' + err.message);
+        } else if (err.status === 401) {
           localStorage.removeItem('token');
           this.router.navigate(['/login']);
         }
-      }, (err: HttpErrorResponse) => { alert('error al connectar con el backend \n' + err.message); });
+      });
     } else {
       this.router.navigate(['/login']);
     }

@@ -10,8 +10,10 @@ export interface LoginData {
 export interface RespuestaLoginRequest {
   token: string;
 }
-export interface RespuestaLoginStatusRequest {
-  token_valido: boolean;
+export interface User {
+  user: string;
+  info: string;
+  iat: number;
 }
 
 @Injectable({
@@ -25,7 +27,7 @@ export class LoginService {
   }
   public token_handshake(token: string) {
     return this.http.post(
-       LoginService.SERVER + '/handshake',
+      LoginService.SERVER + '/handshake',
       JSON.stringify({token: token}),
       {headers: new HttpHeaders({'Content-type': 'application/json'}),
       responseType: 'json'});

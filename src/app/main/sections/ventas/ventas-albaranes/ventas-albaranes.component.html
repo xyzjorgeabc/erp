@@ -115,7 +115,7 @@
                 </td>
                 <td class="px-0 butn-col">
                   <div class="del">
-                    <button type="button" class="btn btn-delete" (click)="eliminarFila(i)"><i class="fas fa-times"></i></button>
+                    <button type="button" class="btn btn-delete" (click)="eliminarFila(i);"><i class="fas fa-times"></i></button>
                   </div>
                 </td>
             </tr>
@@ -145,6 +145,9 @@
         <button type="button" (click)="deshacerCambios();" [disabled]="form.pristine" class="btn btn-danger">Deshacer</button>
       </div>
     </form>
+    <div class="row px-0 py-0">
+      <app-warning-panel [errors]="errors" class="col"></app-warning-panel>
+    </div>
   </div>
   <ng-container #modal></ng-container>
 </main>

@@ -121,6 +121,9 @@
         <button type="button" [disabled]="form.pristine" class="btn btn-danger" (click)="deshacerCambios();">Deshacer</button>
       </div>
     </form>
+    <div class="row px-0 py-0">
+      <app-warning-panel [errors]="errors" class="col"></app-warning-panel>
+    </div>
   </div>
   <ng-container #modal></ng-container>
   <ng-container #modalAlbaranes></ng-container>

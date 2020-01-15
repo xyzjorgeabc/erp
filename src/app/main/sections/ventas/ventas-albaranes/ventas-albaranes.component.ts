@@ -6,6 +6,7 @@ import { DataService, MetodoPago, Cliente, AlbaranVenta, Serie, Articulo, Muestr
 import { ComponenteEditor, CompEditable } from '../../mantenimiento/mantenimiento-comp';
 import { restarPorc, getPorc } from 'src/app/services/calc/calc';
 import { zip, Subscription } from 'rxjs';
+import { ValidatorService } from 'src/app/services/validator/validator.service';
 
 @Component({
   selector: 'app-ventas-albaranes',
@@ -25,13 +26,13 @@ export class VentasAlbaranesComponent extends ComponenteEditor< AlbaranVenta | M
     this.registros = new FormArray([]);
     this.form = new FormGroup({
       serie: new FormControl(),
-      id: new FormControl(),
-      id_cliente: new FormControl(),
+      id: new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id albarán')}),
+      id_cliente: new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id cliente')}),
       nombre_cliente: new FormControl({value: null, disabled: true}),
-      id_metodo_pago: new FormControl(),
+      id_metodo_pago: new FormControl('', {updateOn: 'change', validators: ValidatorService.isUInt.bind(null, 'id metodo pago')}),
       nombre_metodo_pago: new FormControl({value: null, disabled: true}),
-      fecha: new FormControl(),
-      descuento_general: new FormControl(),
+      fecha: new FormControl(null, {updateOn: 'change', validators: ValidatorService.isDate.bind(null, 'fecha albarán')}),
+      descuento_general: new FormControl('', {updateOn: 'change', validators: ValidatorService.isNumber.bind(null, 'descuento general albarán')}),
       registros: this.registros
     });
     this.calculoTotal = new FormGroup({
@@ -58,7 +59,8 @@ export class VentasAlbaranesComponent extends ComponenteEditor< AlbaranVenta | M
       }, (err) => {
         const serie = this.form.controls.serie.value;
         const id = this.form.controls.id.value;
-        this.registros.clear();
+        this.registros = new FormArray([]);
+        this.form.setControl('registros', this.registros);
         this.form.reset('', {emitEvent: false});
         this.form.controls.id.setValue(id, {emitEvent: false});
         this.form.controls.serie.setValue(serie, {emitEvent: false});
@@ -89,17 +91,18 @@ export class VentasAlbaranesComponent extends ComponenteEditor< AlbaranVenta | M
   }
   ngOnInit() {
     this.ns.navegacion.next(['Venta', 'Albaranes']);
+    this.form.valueChanges.subscribe(this.updateErrors.bind(this));
   }
   private getNuevaFila(): FormGroup {
 
     const regForm = new FormGroup({
-      id_articulo: new FormControl(null, {updateOn: 'blur'}),
-      nombre_registro: new FormControl(null, {updateOn: 'blur'}),
-      iva: new FormControl(null, {updateOn: 'blur'}),
-      cantidad_master: new FormControl(null, {updateOn: 'blur'}),
-      precio_coste: new FormControl(null, {updateOn: 'blur'}),
-      descuento: new FormControl(null, {updateOn: 'blur'}),
-      cantidad: new FormControl(null, {updateOn: 'blur'}),
+      id_articulo: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isUInt.bind(null, 'id articulo')}),
+      nombre_registro: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isString.bind(null, 'nombre articulo')}),
+      iva: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isNumber.bind(null, 'iva articulo')}),
+      cantidad_master: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isUInt.bind(null, 'cantidad master articulo')}),
+      precio_coste: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isNumber.bind(null, 'precio coste articulo')}),
+      descuento: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isNumber.bind(null, 'descuento articulo')}),
+      cantidad: new FormControl(null, {updateOn: 'blur', validators: ValidatorService.isNumber.bind(null, 'cantidad articulo')}),
       importe: new FormControl({value: null, disabled: true}, {updateOn: 'change'})
     }, {updateOn: 'blur'});
 
@@ -135,7 +138,9 @@ export class VentasAlbaranesComponent extends ComponenteEditor< AlbaranVenta | M
     this.registros.push(this.getNuevaFila());
     this.form.markAsDirty();
   }
-  public eliminarFila(): void {
+  public eliminarFila(i: number): void {
+    this.registros.removeAt(i);
+    this.form.markAsDirty();
   }
   private calcSetTotales (): void {
     const descuento_general = this.form.controls.descuento_general.value;
@@ -161,7 +166,8 @@ export class VentasAlbaranesComponent extends ComponenteEditor< AlbaranVenta | M
   private setRegistros(regs: RegistroAlbaranVenta[]): void {
 
     this.subscripcionRegs.unsubscribe();
-    this.registros.clear();
+    this.registros = new FormArray([]);
+    this.form.setControl('registros', this.registros);
     regs.forEach((reg) => {
       const regForm = this.getNuevaFila();
       regForm.controls.id_articulo.setValue(reg.id_articulo, {emitEvent: false});
@@ -235,12 +241,13 @@ export class VentasAlbaranesComponent extends ComponenteEditor< AlbaranVenta | M
     });
   }
   public deshacerCambios(): void {
+    this.registros = new FormArray([]);
+    this.form.setControl('registros', this.registros);
+
     while (this.uneditedFormState.registros.length > this.registros.length) {
       this.registros.push(this.getNuevaFila());
     }
-    while (this.uneditedFormState.registros.length < this.registros.length) {
-      this.registros.removeAt(0);
-    }
+
     super.deshacerCambios();
     this.calcSetTotales();
   }
