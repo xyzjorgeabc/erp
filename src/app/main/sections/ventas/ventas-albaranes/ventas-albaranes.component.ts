@@ -45,6 +45,9 @@ export class VentasAlbaranesComponent extends ComponenteEditor< AlbaranVenta | M
     this.form.controls.descuento_general.valueChanges.subscribe(this.calcSetTotales.bind(this));
 
     this.form.controls.id.valueChanges.subscribe(() => {
+      if (this.form.controls.id.invalid) {
+        return void 0;
+      }
       this.ds.fetchAlbaranVenta(this._series.getKey(this.form.controls.serie.value), this.form.controls.id.value + '')
       .subscribe( (alb: AlbaranVenta) => {
         const cliObs = this.ds.fetchCliente(alb.id_cliente + '');
@@ -59,19 +62,28 @@ export class VentasAlbaranesComponent extends ComponenteEditor< AlbaranVenta | M
       }, (err) => {
         const serie = this.form.controls.serie.value;
         const id = this.form.controls.id.value;
+        this.subscripcionRegs.unsubscribe();
         this.registros = new FormArray([]);
         this.form.setControl('registros', this.registros);
         this.form.reset('', {emitEvent: false});
         this.form.controls.id.setValue(id, {emitEvent: false});
         this.form.controls.serie.setValue(serie, {emitEvent: false});
+        this.subscripcionRegs = this.registros.valueChanges.subscribe(this.calcSetTotales.bind(this));
+        this.calculoTotal.reset('', {emitEvent: false});
       } );
     });
     this.form.controls.id_cliente.valueChanges.subscribe( (id: string) => {
+      if (this.form.controls.id_cliente.invalid) {
+        return void 0;
+      }
       this.ds.fetchCliente(id).subscribe((cli: Cliente) => {
         this.setCliente(cli, true);
       });
     });
     this.form.controls.id_metodo_pago.valueChanges.subscribe((id: string) => {
+      if (this.form.controls.id_metodo_pago.invalid) {
+        return void 0;
+      }
       this.ds.fetchMetodoPago(id).subscribe((metodo: MetodoPago) => {
         this.setMetodoPago(metodo, true);
       });
@@ -222,7 +234,17 @@ export class VentasAlbaranesComponent extends ComponenteEditor< AlbaranVenta | M
     });
   }
   public eliminarRegistro(): void {
-
+    this.ds.deleteAlbaranesVenta(this._series.getKey(this.form.controls.serie.value + ''), this.form.controls.id.value).subscribe(() => {
+      const tempid = this.form.value.id;
+      const tempid_serie = this.form.value.serie;
+      this.form.reset('', {emitEvent: false});
+      this.form.controls.id.setValue(tempid, {emitEvent: false});
+      this.form.controls.serie.setValue(tempid_serie, {emitEvent: false});
+      this.calculoTotal.reset('', {emitEvent: false});
+      this.uneditedFormState = null;
+    }, function(err) {
+      alert('El registro está siendo usado por otro registro.');
+    });
   }
   public guardarRegistro(): void {
     const albaran = this.form.value;
@@ -241,7 +263,9 @@ export class VentasAlbaranesComponent extends ComponenteEditor< AlbaranVenta | M
     });
   }
   public deshacerCambios(): void {
+    this.subscripcionRegs.unsubscribe();
     this.registros = new FormArray([]);
+    this.subscripcionRegs = this.registros.valueChanges.subscribe(this.calcSetTotales.bind(this));
     this.form.setControl('registros', this.registros);
 
     while (this.uneditedFormState.registros.length > this.registros.length) {
@@ -250,5 +274,13 @@ export class VentasAlbaranesComponent extends ComponenteEditor< AlbaranVenta | M
 
     super.deshacerCambios();
     this.calcSetTotales();
+  }
+  public descargarRegistro() {
+
+    const nombre = 'albaran_venta_' + this.form.controls.serie.value + '_' + this.form.controls.id.value;
+
+    this.ds.descargarDocAlbaranVenta(this._series.getKey(this.form.controls.serie.value), +this.form.controls.id.value).subscribe((pdf: string) => {
+      this.descargarPDF(pdf, nombre);
+    });
   }
 }

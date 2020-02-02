@@ -4,6 +4,7 @@
       <h4 id="section-title" class="m-0"> {{titulo}} </h4>
     </div>
     <div class="col-lg-auto">
+      <button *ngIf="descarga" type="button" class="btn action-btn" (click)="descargar();"><i class="fas fa-file-download"></i></button>
       <button type="button" class="btn action-btn" (click)="anadir();"><i class="fas fa-plus"></i></button>
       <button type="button" class="btn action-btn" (click)="eliminar();"><i class="fas fa-trash-alt"></i></button>
       <button type="button" class="btn action-btn" (click)="anterior();"><i class="fas fa-caret-square-left"></i></button>

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { BreadcrumbComponent } from './main/breadcrumb/breadcrumb.component';
-import { MenuComponent } from './main/menu/menu.component';
 import { Router } from '@angular/router';
 import { LoginService, User } from './services/login/login.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -34,5 +32,4 @@ export class AppComponent implements OnInit {
       this.router.navigate(['/login']);
     }
   }
-
 }

@@ -43,6 +43,9 @@ export class MantenimientoClientesComponent extends ComponenteEditor<Cliente | M
       if (this.uneditedFormState && (this.uneditedFormState.id === val)) {
         return void 0;
       }
+      if (this.form.controls.id.invalid) {
+        return void 0;
+      }
       this.ds.fetchCliente(val).subscribe((cliente: Cliente) => {
         this.ds.fetchMetodoPago(cliente.id_metodo_pago + '').subscribe((metodo: MetodoPago) => {
           this.setRegistro(cliente);
@@ -59,6 +62,9 @@ export class MantenimientoClientesComponent extends ComponenteEditor<Cliente | M
       });
     });
     this.form.controls.id_metodo_pago.valueChanges.subscribe((val) => {
+      if (this.form.controls.id_metodo_pago.invalid) {
+        return void 0;
+      }
       this.ds.fetchMetodoPago(val).subscribe((metodo: MetodoPago) => {
         this.setMetodoPago(metodo, true);
       },
@@ -129,5 +135,13 @@ export class MantenimientoClientesComponent extends ComponenteEditor<Cliente | M
     });
   }
   public eliminarRegistro(): void {
+    this.ds.deleteCliente(this.form.controls.id.value).subscribe(() => {
+      const tempid = this.form.value.id;
+      this.form.reset('', {emitEvent: false});
+      this.form.controls.id.setValue(tempid, {emitEvent: false});
+      this.uneditedFormState = null;
+    }, function(err) {
+      alert('El registro está siendo usado por otro registro.');
+    });
   }
 }

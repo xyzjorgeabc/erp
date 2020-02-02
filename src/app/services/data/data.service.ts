@@ -9,8 +9,9 @@ export class DataService {
   private static SERVER = 'http://127.0.0.1:3000';
   private static DEFAULT_HEADERS = {
     FETCH: {headers: new HttpHeaders({'Content-Type': 'application/json', 'Accept': 'application/json'})},
-    EDITAR: {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'text' as 'json'}, // Error en definicion de tipos.
-    ELIMINAR: {}
+    EDITAR: {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'text' as 'json'}, // text as json Error en definicion de tipos.
+    ELIMINAR: {headers: new HttpHeaders({'Content-Type': 'application/json'})},
+    DESCARGAR: {headers: new HttpHeaders({'Content-Type': 'application/json'}), responseType: 'text' as 'json'},
   };
   constructor( private http: HttpClient ) {
   }
@@ -127,6 +128,54 @@ export class DataService {
       JSON.stringify({albaran_venta: {id_serie: idSerie, fecha_desde: fechaDesde, fecha_hasta: fechaHasta}, token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<AlbaranVenta[]>;
   }
+  public deleteAlbaranesCompra( idSerie: number, id: number): Observable<any> {
+    return this.http.post(
+      DataService.SERVER + '/delete/albaranes_compra',
+      JSON.stringify({albaran_compra: {id_serie: idSerie, id: id}, token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<any>;
+  }
+  public deleteAlbaranesVenta( idSerie: number, id: number): Observable<any> {
+    return this.http.post(
+      DataService.SERVER + '/delete/albaranes_venta',
+      JSON.stringify({albaran_venta: {id_serie: idSerie, id: id}, token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<any>;
+  }
+  public deleteFacturaVenta( idSerie: number, id: number): Observable<any> {
+    return this.http.post(
+      DataService.SERVER + '/delete/facturas_venta',
+      JSON.stringify({factura_venta: {id_serie: idSerie, id: id}, token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<any>;
+  }
+  public deleteFacturaCompra( idSerie: number, id: number): Observable<any> {
+    return this.http.post(
+      DataService.SERVER + '/delete/facturas_compra',
+      JSON.stringify({factura_compra: {id_serie: idSerie, id: id}, token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<any>;
+  }
+  public deleteArticulo(id: number): Observable<any> {
+    return this.http.post(
+      DataService.SERVER + '/delete/articulos',
+      JSON.stringify({articulo: {id: id}, token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<any>;
+  }
+  public deleteCategoria(id: number): Observable<any> {
+    return this.http.post(
+      DataService.SERVER + '/delete/categoria',
+      JSON.stringify({categoria: {id: id}, token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<any>;
+  }
+  public deleteCliente(id: number): Observable<any> {
+    return this.http.post(
+      DataService.SERVER + '/delete/clientes',
+      JSON.stringify({clientes: {id: id}, token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<any>;
+  }
+  public deleteProveedor(id: number): Observable<any> {
+    return this.http.post(
+      DataService.SERVER + '/delete/proveedores',
+      JSON.stringify({proveedor: {id: id}, token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.FETCH) as Observable<any>;
+  }
   public statsGastos(): Observable<Array<number>> {
     return this.http.post(
       DataService.SERVER + '/stats/gastos',
@@ -150,6 +199,26 @@ export class DataService {
       DataService.SERVER + '/stats/top_clientes',
       JSON.stringify({token: localStorage.getItem('token')}),
       DataService.DEFAULT_HEADERS.FETCH) as Observable<Object>;
+  }
+  public descargarDocAlbaranCompra(idSerie: number, id: number): Observable<any> {
+    return this.http.post(
+      DataService.SERVER + '/doc_gen/albaran_compra', JSON.stringify({albaran_compra: {id_serie: idSerie, id: id}, token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.DESCARGAR) as Observable<any>;
+  }
+  public descargarDocAlbaranVenta(idSerie: number, id: number): Observable<string> {
+    return this.http.post(
+      DataService.SERVER + '/doc_gen/albaran_venta', JSON.stringify({albaran_venta: {id_serie: idSerie, id: id}, token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.DESCARGAR) as Observable<string>;
+  }
+  public descargarDocFacturaVenta(idSerie: number, id: number): Observable<string> {
+    return this.http.post(
+      DataService.SERVER + '/doc_gen/factura_venta', JSON.stringify({factura_venta: {id_serie: idSerie, id: id}, token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.DESCARGAR) as Observable<string>;
+  }
+  public descargarDocFacturaCompra(idSerie: number, id: number): Observable<string> {
+    return this.http.post(
+      DataService.SERVER + '/doc_gen/factura_compra', JSON.stringify({factura_compra: {id_serie: idSerie, id: id}, token: localStorage.getItem('token')}),
+      DataService.DEFAULT_HEADERS.DESCARGAR) as Observable<string>;
   }
 }
 

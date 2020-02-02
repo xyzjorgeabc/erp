@@ -7,6 +7,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class NavBarComponent implements OnInit {
   @Input()
+  descarga: string;
+  @Input()
   titulo: string;
   @Output()
   anadirRegistro    = new EventEmitter<void>();
@@ -16,6 +18,8 @@ export class NavBarComponent implements OnInit {
   siguienteRegistro = new EventEmitter<void>();
   @Output()
   anteriorRegistro  = new EventEmitter<void>();
+  @Output()
+  descargarRegistro = new EventEmitter<void>();
   constructor() {
 
   }
@@ -34,5 +38,7 @@ export class NavBarComponent implements OnInit {
   anterior(): void {
     this.anteriorRegistro.emit();
   }
-
+  descargar(): void {
+    this.descargarRegistro.emit();
+  }
 }

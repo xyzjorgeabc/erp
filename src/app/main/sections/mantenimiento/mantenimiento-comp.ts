@@ -43,7 +43,6 @@ export abstract class ComponenteEditor <T extends object> {
         for (let i = 0; i < formControl.length ; i++) {
           // tslint:disable-next-line: forin
           for (const controlName in (formControl.controls[i] as FormGroup).controls) {
-            console.log(formControl.controls[i]);
             const error = (formControl.controls[i] as FormGroup) .controls[controlName].errors;
             if (error) {
               tmp.add(error);
@@ -57,7 +56,6 @@ export abstract class ComponenteEditor <T extends object> {
         }
       }
     }
-    console.log('\n \n \n \n \n \n \n \n \n \n \n \n \n \n ');
     this.errors = tmp;
   }
   public siguienteRegistro(): void {
@@ -76,6 +74,15 @@ export abstract class ComponenteEditor <T extends object> {
       this.form.controls.id.setValue(tempid, {emitEvent: false});
     }
     this.updateErrors();
+  }
+  public descargarPDF(pdf: string, nombre: string): void {
+    const url = 'data:application/pdf;base64,' + pdf;
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = nombre;
+    document.body.appendChild(anchor);
+    anchor.click();
+
   }
   public abstract anadirRegistro(): void;
   public abstract eliminarRegistro(): void;

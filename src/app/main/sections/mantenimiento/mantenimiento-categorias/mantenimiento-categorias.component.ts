@@ -29,6 +29,9 @@ export class MantenimientoCategoriasComponent extends ComponenteEditor<Categoria
       if (this.uneditedFormState && (this.uneditedFormState.id === val)) {
         return void 0;
       }
+      if (this.form.controls.id.invalid) {
+        return void 0;
+      }
       this.ds.fetchCategoria(val + '').subscribe((cat: Categoria) => {
         this.form.reset('', {emitEvent: false});
         this.setRegistro(cat);
@@ -60,7 +63,14 @@ export class MantenimientoCategoriasComponent extends ComponenteEditor<Categoria
     });
   }
   public eliminarRegistro(): void {
-
+    this.ds.deleteCategoria(this.form.controls.id.value).subscribe(() => {
+      const tempid = this.form.value.id;
+      this.form.reset('', {emitEvent: false});
+      this.form.controls.id.setValue(tempid, {emitEvent: false});
+      this.uneditedFormState = null;
+    }, function(err) {
+      alert('El registro está siendo usado por otro registro.');
+    });
   }
   public guardarRegistro(): void {
     this.ds.editarCategoria(this.form.value).subscribe((cat: Categoria) => {

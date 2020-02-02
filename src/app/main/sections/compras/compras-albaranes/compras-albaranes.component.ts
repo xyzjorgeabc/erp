@@ -44,6 +44,9 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
     this.subscripcionRegs = this.registros.valueChanges.subscribe(this.calcSetTotales.bind(this));
     this.form.controls.descuento_general.valueChanges.subscribe(this.calcSetTotales.bind(this));
     this.form.controls.id.valueChanges.subscribe((val) => {
+      if (this.form.controls.id.invalid) {
+        return void 0;
+      }
       this.ds.fetchAlbaranCompra(this._series.getKey(this.form.controls.serie.value), val)
       .subscribe( (alb: AlbaranCompra) => {
         const provObs = this.ds.fetchProveedor(alb.id_proveedor + '');
@@ -58,19 +61,28 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
       }, (err) => {
         const serie = this.form.controls.serie.value;
         const id = this.form.controls.id.value;
+        this.subscripcionRegs.unsubscribe();
         this.registros = new FormArray([]);
         this.form.setControl('registros', this.registros);
         this.form.reset('', {emitEvent: false});
         this.form.controls.id.setValue(id, {emitEvent: false});
         this.form.controls.serie.setValue(serie, {emitEvent: false});
+        this.subscripcionRegs = this.registros.valueChanges.subscribe(this.calcSetTotales.bind(this));
+        this.calculoTotal.reset('', {emitEvent: false});
       });
     });
     this.form.controls.id_proveedor.valueChanges.subscribe( (id: string) => {
+      if (this.form.controls.id_proveedor.invalid) {
+        return void 0;
+      }
       this.ds.fetchProveedor(id).subscribe((prov: Proveedor) => {
         this.setProveedor(prov, true);
       });
     });
     this.form.controls.id_metodo_pago.valueChanges.subscribe((id: string) => {
+      if (this.form.controls.id_metodo_pago.invalid) {
+        return void 0;
+      }
       this.ds.fetchMetodoPago(id).subscribe((metodo: MetodoPago) => {
         this.setMetodoPago(metodo, true);
       });
@@ -127,6 +139,7 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
         restarPorc(precio * cantidad, +descuento).toFixed(3)
       );
     }
+
     regForm.controls.precio_coste.valueChanges.subscribe( setImporte );
     regForm.controls.cantidad.valueChanges.subscribe( setImporte );
     regForm.controls.descuento.valueChanges.subscribe( setImporte );
@@ -237,6 +250,18 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
     });
   }
   public eliminarRegistro(): void {
+    const id = this.form.controls.id.value;
+    const serie = this.form.controls.serie.value;
+    this.ds.deleteAlbaranesCompra(this._series.getKey(this.form.controls.serie.value), this.form.controls.id.value)
+    .subscribe(() => {
+      this.form.reset('', {emitEvent: false});
+      this.form.controls.id.setValue(id, {emitEvent: false});
+      this.form.controls.serie.setValue(serie, {emitEvent: false});
+      this.calculoTotal.reset('', {emitEvent: false});
+      this.uneditedFormState = null;
+    }, function(err) {
+      alert('El registro está siendo usado por otro registro.');
+    });
 
   }
   public anadirRegistro(): void {
@@ -248,14 +273,23 @@ export class ComprasAlbaranesComponent extends ComponenteEditor<AlbaranCompra | 
     });
   }
   public deshacerCambios(): void {
+    this.subscripcionRegs.unsubscribe();
     this.registros = new FormArray([]);
+    this.subscripcionRegs = this.registros.valueChanges.subscribe(this.calcSetTotales.bind(this));
     this.form.setControl('registros', this.registros);
 
     while (this.uneditedFormState.registros.length > this.registros.length) {
       this.registros.push(this.getNuevaFila());
     }
-
     super.deshacerCambios();
     this.calcSetTotales();
+  }
+  public descargarRegistro() {
+
+    const nombre = 'albaran_compra' + this.form.controls.serie.value + '_' + this.form.controls.id.value;
+
+    this.ds.descargarDocAlbaranCompra(this._series.getKey(this.form.controls.serie.value), +this.form.controls.id.value).subscribe((pdf: string) => {
+      this.descargarPDF(pdf, nombre);
+    });
   }
 }

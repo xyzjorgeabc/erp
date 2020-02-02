@@ -47,6 +47,9 @@ export class VentasFacturasComponent extends ComponenteEditor<FacturaVenta | Cli
     });
 
     this.form.controls.id.valueChanges.subscribe((val) => {
+      if (this.form.controls.id.invalid) {
+        return void 0;
+      }
       this.ds.fetchFacturaVenta(this._series.getKey(this.form.controls.serie.value) + '', val)
       .subscribe( (fact: FacturaVenta) => {
         const cliObs = this.ds.fetchCliente(fact.id_cliente + '');
@@ -72,12 +75,18 @@ export class VentasFacturasComponent extends ComponenteEditor<FacturaVenta | Cli
       this.form.controls.id.setValue('1');
     });
     this.form.controls.id_metodo_pago.valueChanges.subscribe(() => {
+      if (this.form.controls.id_metodo_pago.invalid) {
+        return void 0;
+      }
       this.ds.fetchMetodoPago(this.form.controls.id_metodo_pago.value)
       .subscribe((metodo: MetodoPago) => {
         this.setMetodoPago(metodo, true);
       });
     });
     this.form.controls.id_cliente.valueChanges.subscribe(() => {
+      if (this.form.controls.id_cliente.invalid) {
+        return void 0;
+      }
       this.ds.fetchCliente(this.form.controls.id_cliente.value)
       .subscribe((cliente: Cliente) => {
         this.setCliente(cliente, true);
@@ -210,7 +219,16 @@ export class VentasFacturasComponent extends ComponenteEditor<FacturaVenta | Cli
     });
   }
   public eliminarRegistro() {
-
+    this.ds.deleteFacturaVenta(this._series.getKey(this.form.controls.serie.value + ''), this.form.controls.id.value).subscribe(() => {
+      const tempid = this.form.value.id;
+      const tempid_serie = this.form.value.serie;
+      this.form.reset('', {emitEvent: false});
+      this.form.controls.id.setValue(tempid, {emitEvent: false});
+      this.form.controls.serie.setValue(tempid_serie, {emitEvent: false});
+      this.uneditedFormState = null;
+    }, function(err) {
+      alert('El registro está siendo usado por otro registro.');
+    });
   }
   public guardarRegistro() {
     const factura = this.form.value;
@@ -219,6 +237,14 @@ export class VentasFacturasComponent extends ComponenteEditor<FacturaVenta | Cli
     this.ds.editarFacturaVenta(factura).subscribe(() => {
       this.uneditedFormState = this.form.getRawValue();
       this.form.markAsPristine();
+    });
+  }
+  public descargarRegistro() {
+
+    const nombre = 'factura_venta_' + this.form.controls.serie.value + '_' + this.form.controls.id.value;
+
+    this.ds.descargarDocFacturaVenta(this._series.getKey(this.form.controls.serie.value), +this.form.controls.id.value).subscribe((pdf: string) => {
+      this.descargarPDF(pdf, nombre);
     });
   }
 }

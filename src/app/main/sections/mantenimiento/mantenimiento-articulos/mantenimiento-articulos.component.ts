@@ -45,6 +45,9 @@ export class MantenimientoArticulosComponent extends ComponenteEditor<Articulo|P
       if (this.uneditedFormState && (this.uneditedFormState.id === val)) {
         return void 0;
       }
+      if (this.form.controls.id.invalid) {
+        return void 0;
+      }
       this.ds.fetchArticulo(val).subscribe((art: Articulo) => {
         const catObs = this.ds.fetchCategoria(art.id_categoria + '');
         const provObs = this.ds.fetchProveedor(art.id_proveedor + '');
@@ -66,6 +69,9 @@ export class MantenimientoArticulosComponent extends ComponenteEditor<Articulo|P
       });
     });
     this.form.controls.id_proveedor.valueChanges.subscribe((val) => {
+      if (this.form.controls.id_proveedor.invalid) {
+        return void 0;
+      }
       this.ds.fetchProveedor(val + '').subscribe(
         (prov: Proveedor) => {
           this.setProveedor(prov, false);
@@ -78,6 +84,9 @@ export class MantenimientoArticulosComponent extends ComponenteEditor<Articulo|P
         });
     });
     this.form.controls.id_categoria.valueChanges.subscribe((val) => {
+      if (this.form.controls.id_categoria.invalid) {
+        return void 0;
+      }
       this.ds.fetchCategoria(val + '').subscribe(
         (cat: Categoria) => {
           this.setCategoria(cat, false);
@@ -217,7 +226,14 @@ export class MantenimientoArticulosComponent extends ComponenteEditor<Articulo|P
     });
   }
   public eliminarRegistro(): void {
-
+    this.ds.deleteArticulo(this.form.controls.id.value).subscribe(() => {
+      const tempid = this.form.value.id;
+      this.form.reset('', {emitEvent: false});
+      this.form.controls.id.setValue(tempid, {emitEvent: false});
+      this.uneditedFormState = null;
+    }, function(err) {
+      alert('El registro está siendo usado por otro registro.');
+    });
   }
   validarForm(): void {
 

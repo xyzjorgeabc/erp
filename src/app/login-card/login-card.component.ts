@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginService, RespuestaLoginRequest, RespuestaLoginStatusRequest} from '../services/login/login.service';
-import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { LoginService, RespuestaLoginRequest } from '../services/login/login.service';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -20,6 +20,7 @@ export class LoginCardComponent implements OnInit {
     recordarEmail: new FormControl('', {
       updateOn: 'submit'
     })
+
   });
   constructor(private router: Router, private loginService: LoginService) {
   }
